@@ -4,7 +4,6 @@ require('controller/frontend.php');
 
 try
 {
-	homepage();
 }
 catch(Exception $e)
 {

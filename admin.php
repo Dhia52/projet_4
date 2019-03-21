@@ -1,10 +1,10 @@
 <?php
 
-require('controller/frontend.php');
+require('controller/backend.php');
 
 try
 {
-	homepage();
+	kytf
 }
 catch(Exception $e)
 {

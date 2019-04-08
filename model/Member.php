@@ -81,7 +81,7 @@ class Member
 	{
 		if (strlen($pass) >= 8)
 		{
-			$this->content = $text;
+			$this->pass = $pass;
 		}
 		else
 		{
@@ -91,25 +91,11 @@ class Member
 	
 	public function setSignDate($signDate)
 	{
-		if ($signDate > time())
-		{
-			$this->signDate = $signDate;
-		}
-		else
-		{
-			throw new Exception('Incorrect date value');
-		}
+		$this->signDate = $signDate;
 	}
 	
 	public function setLastConnexion($lastConnexion)
 	{
-		if ($lastConnexion > time())
-		{
-			$this->lastConnexion = $lastConnexion;
-		}
-		else
-		{
-			throw new Exception('Incorrect date value');
-		}
+		$this->lastConnexion = $lastConnexion;
 	}
 }

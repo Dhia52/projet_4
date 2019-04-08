@@ -1,13 +1,17 @@
 <?php
 
+session_start();
+
 require('controller/frontend.php');
+
 
 try
 {
-	homepage();
+	homepage($episodeManager, $memberManager);
 }
 catch(Exception $e)
 {
 	$message = $e->getMessage();
-	require('view/errorView.php');
+	echo $e;
+	//require('view/errorView.php');
 }

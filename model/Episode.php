@@ -83,25 +83,18 @@ class Episode
 	
 	public function setPostDate($postDate)
 	{
-		if ($postDate > time())
-		{
-			$this->postDate = $postDate;
-		}
-		else
-		{
-			throw new Exception('Incorrect date value');
-		}
+		$postDate = new DateTime($postDate);
+		$date = $postDate->format("d/m/Y");
+		$this->postDate = $date;
 	}
 	
 	public function setUpdateDate($updateDate)
 	{
-		if ($postDate > time())
+		if(isset($updateDate))
 		{
-			$this->updateDate = $updateDate;
-		}
-		else
-		{
-			throw new Exception('Incorrect date value');
+			$updateDate = new DateTime($updateDate);
+			$date = $updateDate->format("d/m/Y");
+			$this->updateDate = $date;
 		}
 	}
 }

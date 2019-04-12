@@ -35,7 +35,17 @@ class PDO_EpisodeManager extends EpisodeManager
 		return $list;
 	}
 
-	public function getEpisode($info){}
+	public function getEpisode($id)
+	{
+		$q = $this->db->prepare('SELECT * FROM episodes WHERE id = :id');
+		$q->bindValue(':id', $id, PDO::PARAM_INT);
+		$q->execute();
+
+		$episodeData = $q->fetch(PDO::FETCH_ASSOC);
+
+		return new Episode($episodeData);
+	}
+
 	public function post(Episode $episode){}
 	public function update(Episode $episode){}
 	public function delete($id){}

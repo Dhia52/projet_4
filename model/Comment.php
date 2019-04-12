@@ -4,6 +4,7 @@ class Comment
 {
 	private $id;
 	private $memberId;
+	private $author;
 	private $episodeId;
 	private $comment;
 	private $commentDate;
@@ -35,6 +36,11 @@ class Comment
 	public function memberId()
 	{
 		return $this->memberId;
+	}
+
+	public function author()
+	{
+		return $this->author;
 	}
 	
 	public function episodeId()
@@ -83,6 +89,11 @@ class Comment
 		}
 	}
 
+	public function setAuthor($author)
+	{
+		$this->author = htmlspecialchars($author);
+	}
+
 	public function setEpisodeId($episodeId)
 	{
 		$episodeId = (int) $episodeId;
@@ -98,30 +109,20 @@ class Comment
 
 	public function setComment($comment)
 	{
-		$this->comment = $comment;
+		$this->comment = htmlspecialchars($comment);
 	}
 	
 	public function commentDate($commentDate)
 	{
-		if ($commentDate > time())
-		{
-			$this->commentDate = $commentDate;
-		}
-		else
-		{
-			throw new Exception('Incorrect date value');
-		}
+		$commentDate = new DateTime($commentDate);
+		$date = $commentDate->format('d/m/Y à H\hi');
+		$this->commentDate = $date;
 	}
 	
 	public function setLastUpdate($lastUpdate)
 	{
-		if ($lastUpdate > time())
-		{
-			$this->lastUpdate = $lastUpdate;
-		}
-		else
-		{
-			throw new Exception('Incorrect date value');
-		}
+		$lastUpdate = new DateTime($lastUpdate);
+		$date = $lastUpdate->format('d/m/Y à H\hi');
+		$this->lastUpdate = $date;
 	}
 }

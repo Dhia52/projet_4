@@ -6,24 +6,24 @@
 		</button>
 		<div class="collapse navbar-collapse" id="navbar">
 			<div class="navbar-nav mx-auto">
-					<a class="nav-item nav-link active" href=".">Accueil</a>
-					<a class="nav-item nav-link" href="episodes.php">Episodes</a>
-					<a class="nav-item nav-link" href="about.php">A propos de l'auteur</a>
+					<a id="homeLink" class="nav-item nav-link" href=".">Accueil</a>
+					<a id="episodesLink" class="nav-item nav-link" href="episodes.php">Episodes</a>
+					<a id="aboutLink" class="nav-item nav-link" href="about.php">A propos de l'auteur</a>
 			</div>
 			<form>
 			<?php
 			if(isset($_SESSION['id']))
 			{
 			?>
-				<a class="btn btn-primary" href="profile.php?id=<?= $sessionMember->id() ?>"><?= $sessionMember->pseudo() ?></a>
-				<a class="btn btn-danger" href="form.php?logout">Déconnexion</a>
+				<a id="profileButton" class="btn btn-primary" href="profile.php?id=<?= $_SESSION['id'] ?>"><?= $_SESSION['pseudo'] ?></a>
+				<a id="logoutButton" class="btn btn-danger" href="sessions.php?action=logout">Déconnexion</a>
 			<?php
 			}
 			else
 			{
 			?>
-				<a class="btn btn-primary" href="form.php?signIn">Inscription</a>
-				<a class="btn btn-success" href="form.php?login">Connexion</a>
+				<a id="signInButton" class="btn btn-primary" href="sessions.php?action=signIn">Inscription</a>
+				<a id="loginButton" class="btn btn-success" href="sessions.php?action=login">Connexion</a>
 			<?php
 			}
 			?>

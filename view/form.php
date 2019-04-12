@@ -1,12 +1,22 @@
 <?php
 $title = "Inscription";
-$script = '<script src="assets/js/form.js"></script>';
+if($_GET['action'] === 'login')
+{
+	$script = '<script src="assets/js/login.js"></script>';
+}
+elseif($_GET['action'] == 'signIn')
+{
+	$script = '<script src="assets/js/signIn.js"></script>';
+}
+
+$script .= '<script src="assets/js/form.js"></script>';
 ?>
 
 <?php ob_start() ?>
 <?php require('view/nav.php'); ?>
-<form method="post" action="form.php?signIn">
-	<h2>Formulaire d'inscription</h2>
+<form method="post" action="sessions.php?action=<?= $action ?>">
+	<h2><?= $headerText ?></h2>
+	<p class="text-danger"><?php if(isset($message)){echo $message;}?></p>
 	<div class="form-row m-3">
 		<div class="col-sm-4"><label for="pseudo">Nom utilisateur : </label></div>
 		<div class="col-sm-8">
@@ -22,10 +32,9 @@ $script = '<script src="assets/js/form.js"></script>';
 		</div>
 	</div>
 	<div class="form-row m-3">
-		<div class="col-12"><button type="submit" class="btn btn-primary" disabled="disabled">S'inscrire</button></div>
+	<div class="col-12"><button type="submit" class="btn btn-primary" disabled="disabled"><?= $buttonText ?></button></div>
 	</div>
 </form>
 <?php $content = ob_get_clean(); ?>
 
 <?php require('view/template.php'); ?>
-

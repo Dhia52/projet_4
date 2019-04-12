@@ -6,7 +6,18 @@ require('controller/frontend.php');
 
 try
 {
-	if(isset($_GET['action']))
+	if(isset($_SESSION['id']))
+	{
+		if(isset($_GET['action']) && $_GET['action'] === 'logout')
+		{
+			logout();
+		}
+		else
+		{
+			header('Location: .');
+		}
+	}
+	else
 	{
 		if($_GET['action'] === 'signIn')
 		{
@@ -21,16 +32,19 @@ try
 		}
 		elseif($_GET['action'] === 'login')
 		{
-			displayLoginForm();
+			if(isset($_POST['pseudo']) && isset($_POST['password']))
+			{
+				login($memberManager, $_POST['pseudo'], $_POST['password']);
+			}
+			else
+			{
+				displayLoginForm();
+			}
 		}
-		elseif($_GET['action'] === 'logout')
+		else
 		{
-			logout();
+			displaySignInForm();
 		}
-	}
-	else
-	{
-		displaySignInForm();
 	}
 }
 catch(Exception $e)

@@ -5,7 +5,7 @@ class Member
 	private $id;
 	private $category;
 	private $pseudo;
-	private $pass;
+	private $password;
 	private $signDate;
 	private $lastConnexion;
 
@@ -42,14 +42,19 @@ class Member
 		return $this->pseudo;
 	}
 	
-	public function pass()
+	public function password()
 	{
-		return $this->pass;
+		return $this->password;
 	}
 	
 	public function signDate()
 	{
 		return $this->signDate;
+	}
+
+	public function lastConnexion()
+	{
+		return $this->lastConnexion;
 	}
 	
 	public function setId($id)
@@ -77,11 +82,11 @@ class Member
 		}
 	}
 	
-	public function setPass($pass)
+	public function setPassword($password)
 	{
-		if (strlen($pass) >= 8)
+		if (strlen($password) >= 8)
 		{
-			$this->pass = $pass;
+			$this->password = $password;
 		}
 		else
 		{
@@ -91,11 +96,15 @@ class Member
 	
 	public function setSignDate($signDate)
 	{
-		$this->signDate = $signDate;
+		$signDate = new DateTime($signDate);
+		$date = $signDate->format('d/m/Y à H\hi');
+		$this->signDate = $date;
 	}
 	
 	public function setLastConnexion($lastConnexion)
 	{
-		$this->lastConnexion = $lastConnexion;
+		$lastConnexion = new DateTime($lastConnexion);
+		$date = $lastConnexion->format('d/m/Y à H\hi');
+		$this->lastConnexion = $date;
 	}
 }

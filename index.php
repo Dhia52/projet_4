@@ -7,7 +7,7 @@ require('controller/frontend.php');
 
 try
 {
-	homepage($episodeManager, $memberManager);
+	homepage($episodeManager);
 }
 catch(Exception $e)
 {

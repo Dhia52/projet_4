@@ -1,18 +1,13 @@
 <?php
-$title = "Billet simple pour l'Alaska - accueil";
-$script = '<script src="assets/js/home.js"></script>';?>
+$title = "Billet simple pour l'Alaska - Liste des épisodes";
+$script = '<script src="assets/js/episodes.js"></script>';?>
 
 <?php ob_start(); ?>
 <?php require('view/nav.php'); ?>
 <div class="container-fluid">
-	<header>
-		<h2>Billet simple pour l'Alaska</h2>
-		<p>Un roman de Jean Forteroche</p>
-	</header>
 	<div class="card text-center">
-		<img src="assets/img/alaska.jpeg" class="card-img-top rounded" style="height: 100%;">
 		<div class="card-body">
-			<h2 class="card-title">Derniers épisodes publiés</h2>
+			<h2 class="card-title">Episodes</h2>
 			<div class="row justify-content-around">
 <?php
 foreach ($list as $episode)
@@ -41,7 +36,7 @@ foreach ($list as $episode)
 ?>
 			</div>
 			<div class="card-footer">
-				<a href="" class="btn btn-primary">Liste des épisodes</a>
+				<a href="#" class="btn btn-primary">Remonter</a>
 			</div>
 		</div>
 	</div>

@@ -10,11 +10,11 @@ spl_autoload_register('loadClass');
 $episodeManager = new PDO_EpisodeManager(DBFactory::setPDO());
 $memberManager = new PDO_MemberManager(DBFactory::setPDO());
 $commentManager = new PDO_CommentManager(DBFactory::setPDO());
-
-/*$episodeManager = new MySQLi_EpisodeManager(DBFactory::setMySQLi());
+/*
+$episodeManager = new MySQLi_EpisodeManager(DBFactory::setMySQLi());
 $memberManager = new MySQLi_MemberManager(DBFactory::setMySQLi());
-$commentManager = new MySQLi_CommentManager(DBFactory::setMySQLi());*/
-
+$commentManager = new MySQLi_CommentManager(DBFactory::setMySQLi());
+ */
 function homepage($episodeManager)
 {
 	$list = $episodeManager->getList(6);
@@ -99,11 +99,14 @@ function logout()
 	header('Location: .');
 }
 
-function displayProfile(MemberManager $memberManager, $id)
+function displayProfile(MemberManager $memberManager, CommentManager $commentManager, $id)
 {
 	if($memberManager->exists($id))
 	{
 		$member = $memberManager->getMember($id);
+		$nb_comments = $commentManager->count($id, 'member');
+		$nb_comments = $nb_comments['Comments'];
+		$list = $commentManager->getList($id, 'member');
 		require('view/user.php');
 	}
 	else
@@ -122,5 +125,49 @@ function episode(EpisodeManager $episodeManager, CommentManager $commentManager,
 {
 	$commentsList = $commentManager->getList($id, 'episode');
 	$episode = $episodeManager->getEpisode($id);
+
+	if($episodeManager->exists($id - 1))
+	{
+		$prevDisable = '';
+	}
+	else
+	{
+		$prevDisable = ' disabled';
+	}
+
+	if($episodeManager->exists($id + 1))
+	{
+		$nextDisable = '';
+	}
+	else
+	{
+		$nextDisable = ' disabled';
+	}
+
 	require('view/episodeView.php');
+}
+
+function postComment(CommentManager $commentManager, $episodeId, $authorId, $text)
+{
+	$newComment = new Comment(array(
+		"episodeId" => $episodeId,
+		"authorId" => $authorId,
+		"comment" => $text
+	));
+
+	$commentManager->post($newComment);
+	require('view/postComment.php');
+}
+
+function editComment(CommentManager $commentManager, $id)
+{
+	$comment = $commentManager->getComment($id);
+	if($_SESSION['id'] === $comment->authorId())
+	{
+		require('view/editCommentView.php');
+	}
+	else
+	{
+		header('Location: episodes.php?id=' . $comment->authorId() . '&action=read');
+	}
 }

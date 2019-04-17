@@ -1,9 +1,10 @@
 <?php
 
+namespace openclassrooms\dwj\projet4\bani;
+
 session_start();
 
 require('controller/frontend.php');
-
 
 try
 {

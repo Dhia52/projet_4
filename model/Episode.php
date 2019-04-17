@@ -1,5 +1,7 @@
 <?php
 
+//namespace openclassrooms\dwj\projet4\bani\model;
+
 class Episode
 {
 	private $id;
@@ -60,7 +62,7 @@ class Episode
 		}
 		else
 		{
-			throw new Exception('Incorrect id value');
+			throw new \Exception('Incorrect id value');
 		}
 	}
 	
@@ -72,7 +74,7 @@ class Episode
 		}
 		else
 		{
-			throw new Exception('Overlong episode title');
+			throw new \Exception('Overlong episode title');
 		}
 	}
 	
@@ -83,7 +85,7 @@ class Episode
 	
 	public function setPostDate($postDate)
 	{
-		$postDate = new DateTime($postDate);
+		$postDate = new \DateTime($postDate);
 		$date = $postDate->format("d/m/Y");
 		$this->postDate = $date;
 	}
@@ -92,7 +94,7 @@ class Episode
 	{
 		if(isset($updateDate))
 		{
-			$updateDate = new DateTime($updateDate);
+			$updateDate = new \DateTime($updateDate);
 			$date = $updateDate->format("d/m/Y");
 			$this->updateDate = $date;
 		}

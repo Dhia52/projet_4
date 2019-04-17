@@ -1,15 +1,17 @@
 <?php
 
+//namespace openclassrooms\dwj\projet4\bani\model;
+
 class PDO_EpisodeManager extends EpisodeManager
 {
 	protected $db;
 
-	public function __construct(PDO $db)
+	public function __construct(\PDO $db)
 	{
 		$this->setDb($db);
 	}
 
-	public function setDb(PDO $db)
+	public function setDb(\PDO $db)
 	{
 		$this->db = $db;
 	}
@@ -49,5 +51,13 @@ class PDO_EpisodeManager extends EpisodeManager
 	public function post(Episode $episode){}
 	public function update(Episode $episode){}
 	public function delete($id){}
-	public function exists($info){}
+
+	public function exists(int $id)
+	{
+		$q = $this->db->prepare('SELECT COUNT(*) FROM episodes WHERE id = :id');
+		$q->bindValue(':id', $id, \PDO::PARAM_INT);
+		$q->execute();
+
+		return (bool) $q->fetchColumn();
+	}
 }

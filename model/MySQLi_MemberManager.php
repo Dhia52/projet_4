@@ -1,15 +1,17 @@
 <?php
 
+//namespace openclassrooms\dwj\projet4\bani\model;
+
 class MySQLi_MemberManager extends MemberManager
 {
 	protected $db;
 
-	public function __construct(MySQLi $db)
+	public function __construct(\MySQLi $db)
 	{
 		$this->setDb($db);
 	}
 
-	public function setDb(MySQLi $db)
+	public function setDb(\MySQLi $db)
 	{
 		$this->db = $db;
 	}
@@ -109,4 +111,6 @@ class MySQLi_MemberManager extends MemberManager
 
 		return $q->fetch();
 	}
+
+	public function count(){}
 }

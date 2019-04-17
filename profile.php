@@ -22,7 +22,7 @@ try
 		else
 		{
 			$id = (int) $_GET['id'];
-			displayProfile($memberManager, $id);
+			displayProfile($memberManager, $commentManager, $id);
 		}
 	}
 	else

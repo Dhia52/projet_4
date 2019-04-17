@@ -1,5 +1,7 @@
 <?php
 
+//namespace openclassrooms\dwj\projet4\bani\model;
+
 class Member
 {
 	private $id;
@@ -66,7 +68,7 @@ class Member
 		}
 		else
 		{
-			throw new Exception('Incorrect id value');
+			throw new \Exception('Incorrect id value');
 		}
 	}
 	
@@ -78,7 +80,7 @@ class Member
 		}
 		else
 		{
-			throw new Exception('Overlong username');
+			throw new \Exception('Overlong username');
 		}
 	}
 	
@@ -90,20 +92,20 @@ class Member
 		}
 		else
 		{
-			throw new Exception('Weak password');
+			throw new \Exception('Weak password');
 		}
 	}
 	
 	public function setSignDate($signDate)
 	{
-		$signDate = new DateTime($signDate);
+		$signDate = new \DateTime($signDate);
 		$date = $signDate->format('d/m/Y à H\hi');
 		$this->signDate = $date;
 	}
 	
 	public function setLastConnexion($lastConnexion)
 	{
-		$lastConnexion = new DateTime($lastConnexion);
+		$lastConnexion = new \DateTime($lastConnexion);
 		$date = $lastConnexion->format('d/m/Y à H\hi');
 		$this->lastConnexion = $date;
 	}

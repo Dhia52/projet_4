@@ -1,5 +1,7 @@
 <?php
 
+//namespace openclassrooms\dwj\projet4\bani\model;
+
 abstract class ReportManager
 {
 	abstract public function getList();

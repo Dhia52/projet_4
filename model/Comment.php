@@ -1,14 +1,16 @@
 <?php
 
+//namespace openclassrooms\dwj\projet4\bani\model;
+
 class Comment
 {
 	private $id;
-	private $memberId;
+	private $authorId;
 	private $author;
 	private $episodeId;
 	private $comment;
 	private $commentDate;
-	private $lastUpdate;
+	private $updateDate;
 
 	public function __construct(array $commentData)
 	{
@@ -33,9 +35,9 @@ class Comment
 		return $this->id;
 	}
 	
-	public function memberId()
+	public function authorId()
 	{
-		return $this->memberId;
+		return $this->authorId;
 	}
 
 	public function author()
@@ -58,9 +60,9 @@ class Comment
 		return $this->commentDate;
 	}
 
-	public function lastUpdate()
+	public function updateDate()
 	{
-		return $this->lastUpdate;
+		return $this->updateDate;
 	}
 	
 	public function setId($id)
@@ -72,20 +74,20 @@ class Comment
 		}
 		else
 		{
-			throw new Exception('Incorrect id value');
+			throw new \Exception('Incorrect id value');
 		}
 	}
 	
-	public function setMemberId($memberId)
+	public function setAuthorId($authorId)
 	{
-		$memberId = (int) $memberId;
-		if ($memberId > 0)
+		$authorId = (int) $authorId;
+		if ($authorId > 0)
 		{
-			$this->memberId = $memberId;
+			$this->authorId = $authorId;
 		}
 		else
 		{
-			throw new Exception('Incorrect id value');
+			throw new \Exception('Incorrect id value');
 		}
 	}
 
@@ -103,7 +105,7 @@ class Comment
 		}
 		else
 		{
-			throw new Exception('Incorrect id value');
+			throw new \Exception('Incorrect id value');
 		}
 	}
 
@@ -112,17 +114,20 @@ class Comment
 		$this->comment = htmlspecialchars($comment);
 	}
 	
-	public function commentDate($commentDate)
+	public function setCommentDate($commentDate)
 	{
-		$commentDate = new DateTime($commentDate);
+		$commentDate = new \DateTime($commentDate);
 		$date = $commentDate->format('d/m/Y à H\hi');
 		$this->commentDate = $date;
 	}
 	
-	public function setLastUpdate($lastUpdate)
+	public function setUpdateDate($updateDate)
 	{
-		$lastUpdate = new DateTime($lastUpdate);
-		$date = $lastUpdate->format('d/m/Y à H\hi');
-		$this->lastUpdate = $date;
+		if(isset($updateDate))
+		{
+			$updateDate = new \DateTime($updateDate);
+			$date = $updateDate->format('d/m/Y à H\hi');
+			$this->updateDate = $date;
+		}
 	}
 }

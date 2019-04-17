@@ -1,5 +1,7 @@
 <?php
 
+//namespace openclassrooms\dwj\projet4\bani\model;
+
 class Report
 {
 	private $id;
@@ -30,19 +32,19 @@ class Report
 		return $this->id;
 	}
 	
-	public function comment_id()
+	public function commentId()
 	{
-		return $this->comment_id;
+		return $this->commentId;
 	}
 	
 	public function report()
 	{
-		return $this->pseudo;
+		return $this->report;
 	}
 	
 	public function reportDate()
 	{
-		return $this->pass;
+		return $this->reportDate;
 	}
 	
 	public function setId($id)
@@ -54,7 +56,7 @@ class Report
 		}
 		else
 		{
-			throw new Exception('Incorrect id value');
+			throw new \Exception('Incorrect id value');
 		}
 	}
 	
@@ -68,7 +70,7 @@ class Report
 		}
 		else
 		{
-			throw new Exception('Incorrect id value');
+			throw new \Exception('Incorrect id value');
 		}
 	}
 	
@@ -92,7 +94,7 @@ class Report
 		}
 		else
 		{
-			throw new Exception('Incorrect date value');
+			throw new \Exception('Incorrect date value');
 		}
 	}
 }

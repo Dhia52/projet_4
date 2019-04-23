@@ -1,6 +1,6 @@
 <?php
 
-//namespace openclassrooms\dwj\projet4\bani\model;
+namespace projets_developpeur_web\projet_4\model;
 
 abstract class MemberManager
 {

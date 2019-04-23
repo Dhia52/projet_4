@@ -1,2 +1,3 @@
-model/DBFactory.php
+Config/
+Config/dev.ini
 assets/

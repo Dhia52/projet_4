@@ -1,6 +1,8 @@
 <?php
 
-//namespace openclassrooms\dwj\projet4\bani\model;
+namespace projets_developpeur_web\projet_4\model;
+
+use projets_developpeur_web\projet_4 as project;
 
 class MySQLi_EpisodeManager extends EpisodeManager
 {

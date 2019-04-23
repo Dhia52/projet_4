@@ -1,8 +1,7 @@
 <?php
-$title = "Billet simple pour l'Alaska - accueil";
-$script = '<script src="assets/js/home.js"></script>';?>
+$this->setTitle("Billet simple pour l'Alaska - accueil");
+$this->setJavascript(['home.js']);?>
 
-<?php ob_start(); ?>
 <?php require('view/nav.php'); ?>
 <div class="container-fluid">
 	<header>
@@ -46,7 +45,3 @@ foreach ($list as $episode)
 		</div>
 	</div>
 </div>
-<?php $content = ob_get_clean(); ?>
-
-<?php require('view/template.php'); ?>
-

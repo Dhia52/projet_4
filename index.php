@@ -1,18 +1,13 @@
 <?php
 
-namespace openclassrooms\dwj\projet4\bani;
+namespace projets_developpeur_web\projet_4;
+
+use projets_developpeur_web\projet_4 as project;
 
 session_start();
 
-require('controller/frontend.php');
+require('Autoloader.php');
+Autoloader::register();
 
-try
-{
-	homepage($episodeManager);
-}
-catch(Exception $e)
-{
-	$message = $e->getMessage();
-	echo $e;
-	//require('view/errorView.php');
-}
+$router = new controller\Router();
+$router->routeRequest();

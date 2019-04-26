@@ -1,21 +1,12 @@
 <?php
 
-//namespace openclassrooms\dwj\projet4\bani\model;
+namespace projets_developpeur_web\projet_4\model\Managers\PDO;
 
-class PDO_CommentManager extends CommentManager
+use projets_developpeur_web\projet_4\model\Classes as Classes;
+use projets_developpeur_web\projet_4\model\Managers as Managers;
+
+class CommentManager extends Managers\CommentManager
 {
-	protected $db;
-
-	public function __construct(\PDO $db)
-	{
-		$this->setDb($db);
-	}
-
-	public function setDb(\PDO $db)
-	{
-		$this->db = $db;
-	}
-
 	public function getList(int $id = NULL, $class = NULL)
 	{
 		$list = [];

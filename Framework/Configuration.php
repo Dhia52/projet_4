@@ -1,6 +1,6 @@
 <?php
 
-namespace projets_developpeur_web\projet_4;
+namespace projets_developpeur_web\projet_4\Framework;
 
 class Configuration
 {

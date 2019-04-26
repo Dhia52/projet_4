@@ -1,8 +1,10 @@
 <?php
 
-namespace projets_developpeur_web\projet_4\model;
+namespace projets_developpeur_web\projet_4\model\Managers\CommentManager;
 
-abstract class CommentManager
+use projets_developpeur_web\projet_4\model\Managers as Managers;
+
+abstract class CommentManager extends Managers\Manager
 {
 	abstract public function getList(int $id, $class);
 	abstract public function getComment($id);

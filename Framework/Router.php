@@ -1,8 +1,8 @@
 <?php
 
-namespace projets_developpeur_web\projet_4\controller;
+namespace projets_developpeur_web\projet_4\Framework;
 
-//session_start();
+use projets_developpeur_web\projet_4\controller as controller;
 
 class Router
 {
@@ -11,7 +11,7 @@ class Router
 
 	public function __construct()
 	{
-		$this->homeCntrl = new HomeController();
+		$this->homeCntrl = new controller\HomeController();
 	}
 
 	public function routeRequest()
@@ -30,5 +30,17 @@ class Router
 	{
 		$view = new view\View('error');
 		$view->render(array('message' => $message));
+	}
+
+	protected function getParams($array, $key)
+	{
+		if(isset($array[$key]))
+		{
+			return $array[$key];
+		}
+		else
+		{
+			throw new \Exception("Parameter $key not found.");
+		}
 	}
 }

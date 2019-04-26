@@ -1,21 +1,12 @@
 <?php
 
-//namespace openclassrooms\dwj\projet4\bani\model;
+namespace projets_developpeur_web\projet_4\model\Managers\EpisodeManager;
+
+use projets_developpeur_web\projet_4\model\Classes as Classes;
+use projets_developpeur_web\projet_4\model\Managers as Managers;
 
 class PDO_EpisodeManager extends EpisodeManager
 {
-	protected $db;
-
-	public function __construct(\PDO $db)
-	{
-		$this->setDb($db);
-	}
-
-	public function setDb(\PDO $db)
-	{
-		$this->db = $db;
-	}
-
 	public function getList($nb = NULL)
 	{
 		$list = [];
@@ -29,9 +20,9 @@ class PDO_EpisodeManager extends EpisodeManager
 			$q = $this->db->query('SELECT * FROM episodes ORDER BY id DESC');
 		}
 
-		while($data = $q->fetch(PDO::FETCH_ASSOC))
+		while($data = $q->fetch(\PDO::FETCH_ASSOC))
 		{
-			$list[] = new Episode($data);
+			$list[] = new Classes\Episode($data);
 		}
 
 		return $list;
@@ -40,16 +31,16 @@ class PDO_EpisodeManager extends EpisodeManager
 	public function getEpisode($id)
 	{
 		$q = $this->db->prepare('SELECT * FROM episodes WHERE id = :id');
-		$q->bindValue(':id', $id, PDO::PARAM_INT);
+		$q->bindValue(':id', $id, \PDO::PARAM_INT);
 		$q->execute();
 
-		$episodeData = $q->fetch(PDO::FETCH_ASSOC);
+		$episodeData = $q->fetch(\PDO::FETCH_ASSOC);
 
-		return new Episode($episodeData);
+		return new Classes\Episode($episodeData);
 	}
 
-	public function post(Episode $episode){}
-	public function update(Episode $episode){}
+	public function post(Classes\Episode $episode){}
+	public function update(Classes\Episode $episode){}
 	public function delete($id){}
 
 	public function exists(int $id)

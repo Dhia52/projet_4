@@ -2,21 +2,25 @@
 
 namespace projets_developpeur_web\projet_4\controller;
 
+use projets_developpeur_web\projet_4\model\Managers as Managers;
+use projets_developpeur_web\projet_4\model as model;
+use projets_developpeur_web\projet_4\Framework as Framework;
 use projets_developpeur_web\projet_4 as project;
 
-class HomeController
+
+class HomeController extends Framework\Controller
 {
 	protected $episodeManager;
 
 	public function __construct()
 	{
-		$this->episodeManager = new project\model\MySQLi_EpisodeManager(project\model\DBFactory::setMySQLi());
+		$this->episodeManager = Managers\Manager::setManager('EpisodeManager', project\Configuration::get('class'));
 	}
 
 	public function homepage()
 	{
 		$list = $this->episodeManager->getList(6);
-		$view = new project\view\View(array ('file' => 'home'));
+		$view = new Framework\View(array ('file' => 'home'));
 		$view->render(array('list' => $list));
 	}
 }

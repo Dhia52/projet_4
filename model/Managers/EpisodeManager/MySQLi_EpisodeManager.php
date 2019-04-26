@@ -1,23 +1,12 @@
 <?php
 
-namespace projets_developpeur_web\projet_4\model;
+namespace projets_developpeur_web\projet_4\model\Managers\EpisodeManager;
 
-use projets_developpeur_web\projet_4 as project;
+use projets_developpeur_web\projet_4\model\Classes as Classes;
+use projets_developpeur_web\projet_4\model\Managers as Managers;
 
 class MySQLi_EpisodeManager extends EpisodeManager
 {
-	protected $db;
-
-	public function __construct(\MySQLi $db)
-	{
-		$this->setDb($db);
-	}
-
-	public function setDb(\MySQLi $db)
-	{
-		$this->db = $db;
-	}
-
 	public function getList($nb = NULL)
 	{
 		$list = [];
@@ -33,7 +22,7 @@ class MySQLi_EpisodeManager extends EpisodeManager
 
 		while ($data = $q->fetch_assoc())
 		{
-			$list[] = new Episode($data);
+			$list[] = new Classes\Episode($data);
 		}
 
 		return $list;
@@ -47,11 +36,11 @@ class MySQLi_EpisodeManager extends EpisodeManager
 
 		$episodeData = $q->get_result()->fetch_assoc();
 
-		return new Episode($episodeData);
+		return new Classes\Episode($episodeData);
 	}
 
-	public function post(Episode $episode){}
-	public function update(Episode $episode){}
+	public function post(Classes\Episode $episode){}
+	public function update(Classes\Episode $episode){}
 	public function delete($id){}
 
 	public function exists($id)

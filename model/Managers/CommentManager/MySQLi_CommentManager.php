@@ -1,21 +1,12 @@
 <?php
 
-//namespace openclassrooms\dwj\projet4\bani\model;
+namespace projets_developpeur_web\projet_4\model\Managers\MySQLi;
 
-class MySQLi_CommentManager extends CommentManager
+use projets_developpeur_web\projet_4\model\Classes as Classes;
+use projets_developpeur_web\projet_4\model\Managers as Managers;
+
+class CommentManager extends Managers\CommentManager
 {
-	protected $db;
-
-	public function __construct(\MySQLi $db)
-	{
-		$this->setDb($db);
-	}
-
-	public function setDb(\MySQLi $db)
-	{
-		$this->db = $db;
-	}
-
 	public function getList(int $id = NULL, $class= NULL)
 	{
 		$list = [];
@@ -47,7 +38,7 @@ class MySQLi_CommentManager extends CommentManager
 
 		while ($commentData = $result->fetch_assoc())
 		{
-			$list[] = new Comment($commentData);
+			$list[] = new Classes\Comment($commentData);
 		}
 
 		return $list;

@@ -1,21 +1,12 @@
 <?php
 
-//namespace openclassrooms\dwj\projet4\bani\model;
+namespace projets_developpeur_web\projet_4\model\Managers\MySQLi;
 
-class MySQLi_MemberManager extends MemberManager
+use projets_developpeur_web\projet_4\model\Classes as Classes;
+use projets_developpeur_web\projet_4\model\Managers as Managers;
+
+class MemberManager extends Managers\MemberManager
 {
-	protected $db;
-
-	public function __construct(\MySQLi $db)
-	{
-		$this->setDb($db);
-	}
-
-	public function setDb(\MySQLi $db)
-	{
-		$this->db = $db;
-	}
-
 	public function getList(){}
 
 	public function getMember($info)
@@ -37,10 +28,10 @@ class MySQLi_MemberManager extends MemberManager
 			$memberData = $q->get_result()->fetch_assoc();
 		}
 
-		return new Member($memberData);
+		return new Classes\Member($memberData);
 	}
 
-	public function create(Member $member)
+	public function create(Classes\Member $member)
 	{
 		$pseudo = $member->pseudo();
 		$password = $member->password();

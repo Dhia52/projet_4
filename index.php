@@ -9,5 +9,5 @@ session_start();
 require('Autoloader.php');
 Autoloader::register();
 
-$router = new controller\Router();
+$router = new Framework\Router();
 $router->routeRequest();

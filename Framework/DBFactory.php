@@ -1,8 +1,6 @@
 <?php
 
-namespace projets_developpeur_web\projet_4\model;
-
-use projets_developpeur_web\projet_4 as project;
+namespace projets_developpeur_web\projet_4\Framework;
 
 class DBFactory
 {
@@ -14,26 +12,25 @@ class DBFactory
 
 	private static function getParameters()
 	{
-		self::$_host = project\Configuration::get('host');
-		self::$_dbname = project\Configuration::get('dbname');
-		self::$_user = project\Configuration::get('user');
-		self::$_password = project\Configuration::get('password');
-		self::$_class = project\Configuration::get('class');
+		self::$_host = Configuration::get('host');
+		self::$_dbname = Configuration::get('dbname');
+		self::$_user = Configuration::get('user');
+		self::$_password = Configuration::get('password');
+		self::$_class = Configuration::get('class');
 	}
 
 	public static function setDb()
 	{
 		self::getParameters();
 
-		switch(self::$_class)
+		$method = 'set' . self::$_class;
+
+		if(method_exists(__CLASS__, $method))
 		{
-		case 'PDO':
-			return self::setPDO();
-			break;
-		case 'MySQLi':
-			return self::setMySQLi();
-			break;
-		default:
+			return self::$method();
+		}
+		else
+		{
 			throw new \Exception('Database not found');
 		}
 	}

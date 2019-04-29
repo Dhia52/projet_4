@@ -1,6 +1,6 @@
 <?php
 
-namespace projets_developpeur_web\projet_4\model\Classes;
+namespace projets_developpeur_web\projet_4\Model\Classes;
 
 class Comment
 {

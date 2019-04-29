@@ -9,9 +9,9 @@ class View
 	protected $css;
 	protected $javascript;
 
-	public function __construct(array $viewData)
+	public function __construct($action, $controller = '')
 	{
-		$this->hydrate($viewData);
+		$this->setFile($action, $controller);
 	}
 
 	public function hydrate(array $data)
@@ -63,14 +63,15 @@ class View
 		$this->title = $title;
 	}
 
-	public function setFile($action)
+	public function setFile($action, $controller)
 	{
-		$file = 'view/' . $action . 'View.php';
-
-		if(file_exists($file))
+		$file = 'View/';
+		
+		if($controller !== '')
 		{
-			$this->file = $file;
+			$file = $file . $controller . '/';
 		}
+		$this->file = "$file" . "$action.php";
 	}
 
 	public function setCss(array $scripts)
@@ -106,7 +107,8 @@ class View
 	public function render($data)
 	{
 		$content = $this->getFile($this->file, $data);
-		$view = $this->getFile('view/template.php', array(
+//		$root = Configuration::get('root', '/');
+		$view = $this->getFile('View/template.php', array(
 			'content' => $content,
 			'title' => $this->title(),
 			'css' => $this->css(),
@@ -127,5 +129,10 @@ class View
 		{
 			throw new \Exception("File $file does not exist.");
 		}
+	}
+
+	public function sanitize($value)
+	{
+		return htmlspecialchars($value, ENT_QUOTES, 'UTF-8', false);
 	}
 }

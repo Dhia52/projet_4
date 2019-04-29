@@ -1,9 +1,9 @@
 <?php
 
-namespace projets_developpeur_web\projet_4\model\Managers\MySQLi;
+namespace projets_developpeur_web\projet_4\Model\Managers\MySQLi;
 
-use projets_developpeur_web\projet_4\model\Classes as Classes;
-use projets_developpeur_web\projet_4\model\Managers as Managers;
+use projets_developpeur_web\projet_4\Model\Classes as Classes;
+use projets_developpeur_web\projet_4\Model\Managers as Managers;
 
 class CommentManager extends Managers\CommentManager
 {

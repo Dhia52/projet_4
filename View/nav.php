@@ -7,7 +7,7 @@
 		<div class="collapse navbar-collapse" id="navbar">
 			<div class="navbar-nav mx-auto">
 					<a id="homeLink" class="nav-item nav-link" href=".">Accueil</a>
-					<a id="episodesLink" class="nav-item nav-link" href="episodes.php">Episodes</a>
+					<a id="episodesLink" class="nav-item nav-link" href="./?controller=episodes">Episodes</a>
 					<a id="aboutLink" class="nav-item nav-link" href="about.php">A propos de l'auteur</a>
 			</div>
 			<form>

@@ -2,23 +2,19 @@
 
 namespace projets_developpeur_web\projet_4\Framework;
 
-use projets_developpeur_web\projet_4\controller as controller;
+use projets_developpeur_web\projet_4\Controller as Controller;
 
 class Router
 {
-	protected $homeCntrl;
-	protected $episodesCntrl;
-
-	public function __construct()
-	{
-		$this->homeCntrl = new controller\HomeController();
-	}
-
 	public function routeRequest()
 	{
 		try
 		{
-			$this->homeCntrl->homepage();
+			$request = new Request(array_merge($_GET, $_POST));
+			$controller = $this->createController($request);
+			$action = $this->createAction($request);
+
+			$controller->executeAction($action);
 		}
 		catch(\Exception $e)
 		{
@@ -26,21 +22,35 @@ class Router
 		}
 	}
 
-	protected function error($message)
+	protected function createController(Request $request)
 	{
-		$view = new view\View('error');
-		$view->render(array('message' => $message));
+		$controller = 'Home'; //default controller
+		
+		if($request->exists('controller'))
+		{
+			$controller = $request->getParam('controller');
+			$controller = ucfirst(strtolower($controller));
+		}
+
+		$controllerClass = 'projets_developpeur_web\projet_4\Controller\\' . $controller . 'Controller';
+		$controller = new $controllerClass();
+		$controller->setRequest($request);
+		return $controller;
 	}
 
-	protected function getParams($array, $key)
+	protected function createAction(Request $request)
 	{
-		if(isset($array[$key]))
+		$action = 'index'; //default action
+		if($request->exists('action'))
 		{
-			return $array[$key];
+			$action = $request->getParam('action');
 		}
-		else
-		{
-			throw new \Exception("Parameter $key not found.");
-		}
+		return $action;
+	}
+
+	protected function error($message)
+	{
+		$view = new View('error');
+		$view->render(array('message' => $message));
 	}
 }

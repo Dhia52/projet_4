@@ -1,8 +1,8 @@
 <?php
 
-namespace projets_developpeur_web\projet_4\model\Managers\CommentManager;
+namespace projets_developpeur_web\projet_4\Model\Managers\CommentManager;
 
-use projets_developpeur_web\projet_4\model\Managers as Managers;
+use projets_developpeur_web\projet_4\Model\Managers as Managers;
 
 abstract class CommentManager extends Managers\Manager
 {

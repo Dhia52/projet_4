@@ -8,7 +8,7 @@ class DBFactory
 	private static $_dbname;
 	private static $_user;
 	private static $_password;
-	private static $_class;
+	private static $_api;
 
 	private static function getParameters()
 	{
@@ -16,14 +16,14 @@ class DBFactory
 		self::$_dbname = Configuration::get('dbname');
 		self::$_user = Configuration::get('user');
 		self::$_password = Configuration::get('password');
-		self::$_class = Configuration::get('class');
+		self::$_api = Configuration::get('DB_API');
 	}
 
 	public static function setDb()
 	{
 		self::getParameters();
 
-		$method = 'set' . self::$_class;
+		$method = 'set' . self::$_api;
 
 		if(method_exists(__CLASS__, $method))
 		{

@@ -1,26 +1,25 @@
 <?php
-$title = $episode->title();
-$script = '<script src="assets/js/episodes.js"></script>';?>
+$this->setTitle($this->sanitize($episode->title()));
+$this->setJavascript(['episodes.js']);?>
 
-<?php ob_start(); ?>
-<?php require('view/nav.php'); ?>
+<?php require('View/nav.php'); ?>
 <nav class="navbar">
-	<a href="episodes.php?id=<?= $_GET['id']-1 ?>" class="btn btn-danger<?= $prevDisable ?>"><i class="fas fa-arrow-alt-circle-left"></i> Episode précédent</a>
-	<a href="episodes.php" class="btn btn-primary">Liste des épisodes</a>
-	<a href="episodes.php?id=<?= $_GET['id']+1 ?>" class="btn btn-success<?= $nextDisable ?>">Episode suivant <i class="fas fa-arrow-alt-circle-right"></i></a>
+	<a href="?controller=episodes&amp;action=read&amp;id=<?= $_GET['id']-1 ?>" class="btn btn-danger<?= $prevDisable ?>"><i class="fas fa-arrow-alt-circle-left"></i> Episode précédent</a>
+	<a href="?controller=episodes" class="btn btn-primary">Liste des épisodes</a>
+	<a href="?controller=episodes&amp;action=read&amp;id=<?= $_GET['id']+1 ?>" class="btn btn-success<?= $nextDisable ?>">Episode suivant <i class="fas fa-arrow-alt-circle-right"></i></a>
 </nav>
 <div class="container-fluid">
 	<div class="card">
-	<h1 class="card-header"><?= $episode->title() ?></h1>
+	<h1 class="card-header"><?= $this->sanitize($episode->title()) ?></h1>
 		<div class="card-body">
-			<p class="card-text"><?= $episode->content() ?></p>
+			<p class="card-text"><?= $this->sanitize($episode->content()) ?></p>
 		</div>
 		<div class="card-footer">
 			<h3>Commentaires</h3>
 <?php
 if(isset($_SESSION['id']))
 {
-	if(empty($commentsList))
+	if(empty($comments))
 	{
 ?>
 		<p>Soyez la première personne à laisser votre avis sur cet épisode !</p>
@@ -46,7 +45,7 @@ else
 			<table class="table table-striped table-borderless">
 				<tbody>
 <?php
-foreach ($commentsList as $comment)
+foreach ($comments as $comment)
 {
 ?>
 <tr class="row d-flex align-items-center">
@@ -92,7 +91,3 @@ if(isset($_SESSION['id']))
 		</div>
 	</div>
 </div>
-<?php $content = ob_get_clean(); ?>
-
-<?php require('view/template.php'); ?>
-

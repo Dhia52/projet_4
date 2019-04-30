@@ -1,8 +1,10 @@
 <?php
 
-namespace projets_developpeur_web\projet_4\model\Managers;
+namespace projets_developpeur_web\projet_4\model\Managers\MemberManager;
 
-abstract class MemberManager extends Manager
+use projets_developpeur_web\projet_4\model\Managers as Managers;
+
+abstract class MemberManager extends Managers\Manager
 {
 	abstract public function getList();
 	abstract public function getMember($info);

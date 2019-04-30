@@ -107,8 +107,9 @@ class View
 	public function render($data)
 	{
 		$content = $this->getFile($this->file, $data);
-//		$root = Configuration::get('root', '/');
+		$root = Configuration::get('root', '/');
 		$view = $this->getFile('View/template.php', array(
+			'root' => $root,
 			'content' => $content,
 			'title' => $this->title(),
 			'css' => $this->css(),

@@ -1,11 +1,11 @@
 <?php
 
-namespace projets_developpeur_web\projet_4\Model\Managers\MySQLi;
+namespace projets_developpeur_web\projet_4\Model\Managers\CommentManager;
 
 use projets_developpeur_web\projet_4\Model\Classes as Classes;
 use projets_developpeur_web\projet_4\Model\Managers as Managers;
 
-class CommentManager extends Managers\CommentManager
+class MySQLi_CommentManager extends CommentManager
 {
 	public function getList(int $id = NULL, $class= NULL)
 	{

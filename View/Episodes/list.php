@@ -16,16 +16,16 @@ foreach ($list as $episode)
 				<h3 class="card-header">Episode <?= $episode->id() ?></h3>
 					<div class="card-body d-flex flex-column justify-content-center">
 						<div class="card-text d-flex flex-column">
-							<h5><?= $episode->title() ?></h5>
-							<a href="episodes.php?id=<?= $episode->id() ?>" class="btn btn-primary">Lire</a>
+							<h5><?= $this->sanitize($episode->title()) ?></h5>
+							<a href="?controller=episodes&amp;action=read&amp;id=<?= $episode->id() ?>" class="btn btn-primary">Lire</a>
 						</div>
 					</div>
 					<p class="card-footer">
-					<i>Publié le : <?= $episode->postDate() ?><br />
+					<i>Publié le : <?= $this->sanitize($episode->postDate()) ?><br />
 <?php
 	if(null !== $episode->updateDate())
 	{
-		echo ' Mise à jour le : ' . $episode->updateDate();
+		echo ' Mise à jour le : ' . $this->sanitize($episode->updateDate());
 	}
 ?>
 					</i></p>

@@ -1,11 +1,11 @@
 <?php
 
-namespace projets_developpeur_web\projet_4\model\Managers\MySQLi;
+namespace projets_developpeur_web\projet_4\model\Managers\MemberManager;
 
 use projets_developpeur_web\projet_4\model\Classes as Classes;
 use projets_developpeur_web\projet_4\model\Managers as Managers;
 
-class MemberManager extends Managers\MemberManager
+class MySQLi_MemberManager extends MemberManager
 {
 	public function getList(){}
 

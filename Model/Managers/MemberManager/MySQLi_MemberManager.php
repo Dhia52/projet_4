@@ -1,9 +1,9 @@
 <?php
 
-namespace projets_developpeur_web\projet_4\model\Managers\MemberManager;
+namespace projets_developpeur_web\projet_4\Model\Managers\MemberManager;
 
-use projets_developpeur_web\projet_4\model\Classes as Classes;
-use projets_developpeur_web\projet_4\model\Managers as Managers;
+use projets_developpeur_web\projet_4\Model\Classes as Classes;
+use projets_developpeur_web\projet_4\Model\Managers as Managers;
 
 class MySQLi_MemberManager extends MemberManager
 {

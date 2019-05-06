@@ -2,7 +2,7 @@
 
 namespace projets_developpeur_web\projet_4\Model\Managers\CommentManager;
 
-use projets_developpeur_web\projet_4\Model\Classes as Classes;
+use projets_developpeur_web\projet_4\Model\Classes\Comment;
 use projets_developpeur_web\projet_4\Model\Managers as Managers;
 
 class MySQLi_CommentManager extends CommentManager
@@ -38,13 +38,22 @@ class MySQLi_CommentManager extends CommentManager
 
 		while ($commentData = $result->fetch_assoc())
 		{
-			$list[] = new Classes\Comment($commentData);
+			$list[] = new Comment($commentData);
 		}
 
 		return $list;
 	}
 
-	public function getComment($id){}
+	public function getComment($id)
+	{
+		$q = $this->db->prepare('SELECT * FROM comments WHERE id = ?');
+		$q->bind_param('i', $id);
+		$q->execute();
+
+		$commentData = $q->get_result()->fetch_assoc();
+
+		return new Comment($commentData);
+	}
 
 	public function post(Comment $comment)
 	{
@@ -57,9 +66,26 @@ class MySQLi_CommentManager extends CommentManager
 		$q->execute();
 	}
 
-	public function update(Comment $comment){}
+	public function update(Comment $comment)
+	{
+		$commentId = $comment->id();
+		$content = $comment->comment();
+
+		$q = $this->db->prepare('UPDATE comments SET comment = ?, updateDate = NOW() WHERE id = ?');
+		$q->bind_param('si', $content, $commentId);
+		$q->execute();
+	}
+
 	public function delete($id){}
-	public function exists($id){}
+
+	public function exists($id)
+	{
+		$q = $this->db->prepare('SELECT id FROM comments WHERE id = ?');
+		$q->bind_param('i', $id);
+		$q->execute();
+
+		return $q->fetch();
+	}
 
 	public function count($id = NULL, $class = NULL)
 	{

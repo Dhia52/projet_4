@@ -14,7 +14,7 @@ class HomeController extends Framework\Controller
 
 	public function __construct()
 	{
-		$this->episodeManager = Managers\Manager::setManager('EpisodeManager', Framework\Configuration::get('class'));
+		$this->episodeManager = Managers\Manager::setManager('EpisodeManager', Framework\Configuration::get('DB_API'));
 	}
 
 	public function index()

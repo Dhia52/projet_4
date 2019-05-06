@@ -1,23 +1,11 @@
 <?php
 
-namespace projets_developpeur_web\projet_4\model\Managers\MemberManager;
+namespace projets_developpeur_web\projet_4\Model\Managers\MemberManager;
 
-//use projets_developpeur_web\projet_4\model\Managers;
+use projets_developpeur_web\projet_4\Model\Classes\Member;
 
 class PDO_MemberManager extends MemberManager
 {
-	protected $db;
-
-	public function __construct(\PDO $db)
-	{
-		$this->setDb($db);
-	}
-
-	public function setDb(\PDO $db)
-	{
-		$this->db = $db;
-	}
-
 	public function getList(){}
 
 	public function getMember($info)

@@ -16,14 +16,14 @@
 			{
 			?>
 				<a id="profileButton" class="btn btn-primary" href="profile.php?id=<?= $_SESSION['id'] ?>"><?= $_SESSION['pseudo'] ?></a>
-				<a id="logoutButton" class="btn btn-danger" href="sessions.php?action=logout">Déconnexion</a>
+				<a id="logoutButton" class="btn btn-danger" href="?controller=sessions&amp;action=logout">Déconnexion</a>
 			<?php
 			}
 			else
 			{
 			?>
-				<a id="signInButton" class="btn btn-primary" href="sessions.php?action=signIn">Inscription</a>
-				<a id="loginButton" class="btn btn-success" href="sessions.php?action=login">Connexion</a>
+				<a id="signInButton" class="btn btn-primary" href="?controller=sessions&amp;action=signIn">Inscription</a>
+				<a id="loginButton" class="btn btn-success" href="?controller=sessions&amp;action=login">Connexion</a>
 			<?php
 			}
 			?>

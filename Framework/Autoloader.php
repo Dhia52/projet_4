@@ -7,7 +7,7 @@ class Autoloader
 	static function autoload($class)
 	{
 		$class = str_replace('\\', DIRECTORY_SEPARATOR, $class);
-		echo $class . '<br>';
+		//echo $class . '<br>';
 		require_once($_SERVER['DOCUMENT_ROOT'] . "/$class" . '.php');
 	}
 

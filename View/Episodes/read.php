@@ -3,6 +3,7 @@ $this->setTitle($this->sanitize($episode->title()));
 $this->setJavascript(['episodes.js']);?>
 
 <?php require('View/nav.php'); ?>
+
 <nav class="navbar">
 	<a href="?controller=episodes&amp;action=read&amp;id=<?= $_GET['id']-1 ?>" class="btn btn-danger<?= $prevDisable ?>"><i class="fas fa-arrow-alt-circle-left"></i> Episode précédent</a>
 	<a href="?controller=episodes" class="btn btn-primary">Liste des épisodes</a>
@@ -58,29 +59,34 @@ if(NULL !== $comment->updateDate())
 <?php
 }
 ?>
-		...</i></small>
+		</i></small>
 	</td>
 	<td class="col-md-8">
-		<p class="mb-0"><?= $comment->comment() ?></p>
-		<p class="mb-0 text-right"><i><small>
+		<div class="row">
+			<div class="col-10">
+				<?= $comment->comment(); ?>	
+			</div>
+			<div class="col-2 text-sm">
 <?php
 if(isset($_SESSION['id']))
 {
 	if($_SESSION['id'] === $comment->authorId())
 	{
 ?>
-	<a href="" class="edit">Modifier</a>/<a href="" class="text-danger delete">Supprimer</a>
+	<a href="?controller=comments&amp;action=edit&amp;id=<?= $comment->id() ?>" class="text-primary">Modifier</a><br/>
+	<a href="?controller=comments&amp;action=delete&amp;id=<?= $comment->id() ?>" class="text-danger">Supprimer</a>
 <?php
 	}
 	else
 	{
 ?>
-	<a href="" class="text-danger">Signaler</a>
+	<a href="?controller=comments&amp;action=report&amp;id=<?= $comment->id() ?>" class="text-danger">Signaler</a>
 <?php
 	}
 }
 ?>
-		</i></small></p>
+			</div>
+		</div>
 	</td>
 </tr>
 <?php

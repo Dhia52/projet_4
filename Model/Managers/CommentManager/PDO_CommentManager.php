@@ -2,7 +2,7 @@
 
 namespace projets_developpeur_web\projet_4\Model\Managers\CommentManager;
 
-use projets_developpeur_web\projet_4\Model\Classes as Classes;
+use projets_developpeur_web\projet_4\Model\Classes\Comment;
 use projets_developpeur_web\projet_4\Model\Managers as Managers;
 
 class PDO_CommentManager extends CommentManager
@@ -35,15 +35,24 @@ class PDO_CommentManager extends CommentManager
 		
 		while ($data = $q->fetch(\PDO::FETCH_ASSOC))
 		{
-			$list[] = new Classes\Comment($data);
+			$list[] = new Comment($data);
 		}
 
 		return $list;
 	}
 
-	public function getComment($id){}
+	public function getComment($id)
+	{
+		$q = $this->db->prepare('SELECT * FROM comments WHERE id = :id');
+		$q->bindValue(':id', $id, \PDO::PARAM_INT);
+		$q->execute();
 
-	public function post(Classes\Comment $comment)
+		$commentData = $q->fetch(\PDO::FETCH_ASSOC);
+
+		return new Comment($commentData);
+	}
+
+	public function post(Comment $comment)
 	{
 		$q = $this->db->prepare('INSERT INTO comments (episodeId, authorId, comment, commentDate) VALUES (:episodeId, :authorId, :comment, NOW())');
 		$q->bindValue(':episodeId', $comment->episodeId(), \PDO::PARAM_INT);
@@ -52,9 +61,25 @@ class PDO_CommentManager extends CommentManager
 		$q->execute();
 	}
 
-	public function update(Classes\Comment $comment){}
+	public function update(Comment $comment)
+	{
+		$q = $this->db->prepare('UPDATE comments SET comment = :comment, updateDate = NOW() WHERE id = :id');
+		$q->bindValue(':comment', $comment->comment(), \PDO::PARAM_STR);
+		$q->bindValue(':id', $comment->id(), \PDO::PARAM_INT);
+		$q->execute();
+	}
+
 	public function delete($id){}
-	public function exists($id){}
+
+	public function exists($id)
+	{
+		$q = $this->db->prepare('SELECT COUNT(*) FROM comments WHERE id = :id');
+		$q->bindValue(':id', $id, \PDO::PARAM_INT);
+		$q->execute();
+
+		return (bool) $q->fetchColumn();
+	}
+	
 	public function count($id = NULL, $class = NULL)
 	{
 		if(isset($id) && isset($class))

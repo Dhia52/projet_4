@@ -71,6 +71,18 @@ class Member
 			throw new \Exception('Incorrect id value');
 		}
 	}
+
+	public function setCategory($category)
+	{
+		if(in_array($category, array('Admin', 'Writer', 'Mod', 'Reader')))
+		{
+			$this->category = $category;
+		}
+		else
+		{
+			$this->category = 'Reader';
+		}
+	}
 	
 	public function setPseudo($pseudo)
 	{

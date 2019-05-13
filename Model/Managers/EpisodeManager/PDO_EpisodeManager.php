@@ -2,8 +2,7 @@
 
 namespace projets_developpeur_web\projet_4\Model\Managers\EpisodeManager;
 
-use projets_developpeur_web\projet_4\Model\Classes as Classes;
-use projets_developpeur_web\projet_4\Model\Managers as Managers;
+use projets_developpeur_web\projet_4\Model\Classes\Episode;
 
 class PDO_EpisodeManager extends EpisodeManager
 {
@@ -22,7 +21,7 @@ class PDO_EpisodeManager extends EpisodeManager
 
 		while($data = $q->fetch(\PDO::FETCH_ASSOC))
 		{
-			$list[] = new Classes\Episode($data);
+			$list[] = new Episode($data);
 		}
 
 		return $list;
@@ -36,12 +35,18 @@ class PDO_EpisodeManager extends EpisodeManager
 
 		$episodeData = $q->fetch(\PDO::FETCH_ASSOC);
 
-		return new Classes\Episode($episodeData);
+		return new Episode($episodeData);
 	}
 
-	public function post(Classes\Episode $episode){}
-	public function update(Classes\Episode $episode){}
+	public function post(Episode $episode){}
+	public function update(Episode $episode){}
 	public function delete($id){}
+
+	public function count()
+	{
+		$q = $this->db->query('SELECT COUNT(*) FROM episodes');
+		return $q->fetchColumn();
+	}
 
 	public function exists(int $id)
 	{

@@ -76,7 +76,12 @@ class MySQLi_CommentManager extends CommentManager
 		$q->execute();
 	}
 
-	public function delete($id){}
+	public function delete($id)
+	{
+		$q = $this->db->prepare('DELETE FROM comments WHERE id = ?');
+		$q->bind_param('i', $id);
+		$q->execute();
+	}
 
 	public function exists($id)
 	{
@@ -113,6 +118,7 @@ class MySQLi_CommentManager extends CommentManager
 			$result = $this->db->query('SELECT COUNT(*) AS Comments FROM comments');
 		}
 
-		return $result->fetch_assoc();
+		$count = $result->fetch_assoc();
+		return $count['Comments'];
 	}
 }

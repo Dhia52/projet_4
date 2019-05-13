@@ -20,8 +20,23 @@ class CommentsController extends Framework\Controller
 
 	public function post()
 	{
-		$list = $this->episodeManager->getList();
-		$this->createView(array('list' => $list));
+		if(isset($_SESSION['id']) && isset($_GET['id']))
+		{
+			if(isset($_POST['newComment']) && $_POST['newCommment'] !== '')
+			{
+				$episodeId = (int) $_GET['id'];
+				$comment = new Comment(array(
+					'comment' => $_POST['newComment'],
+					'authorId' => $_SESSION['id'],
+					'episodeId' => $episodeId));
+				$this->commentManager->post($comment);
+			}
+			else
+			{
+				throw new \Exception('Cannot post empty comment');
+			}
+		}
+		header('Location: .?controller=episodes&action=read&id=' . $episodeId);
 	}
 
 	public function edit()
@@ -34,7 +49,8 @@ class CommentsController extends Framework\Controller
 					'id' => $_GET['id'],
 					'comment' => $_POST['comment']));
 				$this->commentManager->update($updatedComment);
-				header('Location: .?controller=episodes&action=read&id=' . $_GET['id']);
+				$episodeId = $this->commentManager->getComment($updatedComment->id())->episodeId();
+				header('Location: .?controller=episodes&action=read&id=' . $episodeId);
 			}
 			else
 			{
@@ -65,6 +81,31 @@ class CommentsController extends Framework\Controller
 
 	public function delete()
 	{
+		if(isset($_GET['id']))
+		{
+			$commentId = (int) $_GET['id'];
+			if($this->commentManager->exists($commentId))
+			{
+				$comment = $this->commentManager->getComment($commentId);
+				if($_SESSION['id'] === $comment->authorId())
+				{
+					$this->commentManager->delete($commentId);
+					\header('Location: .?controller=episodes&action=read&id=' . $comment->episodeId());
+				}
+				else
+				{
+					throw new \Exception('Unauthorised action');
+				}
+			}
+			else
+			{
+				throw new \Exception('Comment does not exist');
+			}
+		}
+		else
+		{
+			\header('Location: .?controller=episodes&action=list');
+		}
 	}
 
 	public function index()

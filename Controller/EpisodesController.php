@@ -27,29 +27,36 @@ class EpisodesController extends Framework\Controller
 
 	public function read()
 	{
-		$id = $this->request->getParam('id');
+		$id = (int) $this->request->getParam('id');
 
-		$prevDisable = ' disabled';
-		$nextDisable = ' disabled';
-
-		$episode = $this->episodeManager->getEpisode($id);
-		$comments = $this->commentManager->getList($id, 'episode');
-
-		if($this->episodeManager->exists($id - 1))
+		if($this->episodeManager->exists($id))
 		{
-			$prevDisable = '';
-		}
+			$prevDisable = ' disabled';
+			$nextDisable = ' disabled';
+			
+			$episode = $this->episodeManager->getEpisode($id);
+			$comments = $this->commentManager->getList($id, 'episode');
 
-		if($this->episodeManager->exists($id + 1))
+			if($this->episodeManager->exists($id - 1))
+			{
+				$prevDisable = '';
+			}
+
+			if($this->episodeManager->exists($id + 1))
+			{
+				$nextDisable = '';
+			}
+
+			$this->createView(array(
+				'episode' => $episode,
+				'comments' => $comments,
+				'nextDisable' => $nextDisable,
+				'prevDisable' => $prevDisable));
+		}
+		else
 		{
-			$nextDisable = '';
+			throw new \Exception('Requested episode does not exist.');
 		}
-
-		$this->createView(array(
-			'episode' => $episode,
-			'comments' => $comments,
-			'nextDisable' => $nextDisable,
-			'prevDisable' => $prevDisable));
 	}
 
 	public function index()

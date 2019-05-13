@@ -69,7 +69,12 @@ class PDO_CommentManager extends CommentManager
 		$q->execute();
 	}
 
-	public function delete($id){}
+	public function delete($id)
+	{
+		$q = $this->db->prepare('DELETE FROM comments WHERE id = :id');
+		$q->bindValue(':id', $id, \PDO::PARAM_INT);
+		$q->execute();
+	}
 
 	public function exists($id)
 	{
@@ -104,6 +109,6 @@ class PDO_CommentManager extends CommentManager
 			$q = $this->db->query('SELECT COUNT(*) AS Comments FROM comments');
 		}
 
-		return $q->fetch(\PDO::FETCH_ASSOC);
+		return $q->fetchColumn();
 	}
 }

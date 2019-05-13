@@ -32,10 +32,23 @@ class Router
 			$controller = ucfirst(strtolower($controller));
 		}
 
-		$controllerClass = 'projets_developpeur_web\projet_4\Controller\\' . $controller . 'Controller';
-		$controller = new $controllerClass();
-		$controller->setRequest($request);
-		return $controller;
+		$root = $_SERVER['DOCUMENT_ROOT'] . Configuration::get('root');
+		$controllerPath = $root . 'Controller/' . $controller . 'Controller';
+		$controllerFile = $controllerPath . '.php';
+
+		if(file_exists($controllerFile))
+		{
+			$controllerClass = \str_replace($_SERVER['DOCUMENT_ROOT'], '', $controllerPath);
+
+			$controllerClass = \str_replace('/', '\\', $controllerClass);
+			$controller = new $controllerClass();
+			$controller->setRequest($request);
+			return $controller;
+		}
+		else
+		{
+			throw new \Exception("Error 404: This file does not exist");
+		}
 	}
 
 	protected function createAction(Request $request)

@@ -2,15 +2,16 @@
 
 namespace projets_developpeur_web\projet_4\Model\Managers\EpisodeManager;
 
-use projets_developpeur_web\projet_4\Model\Managers as Managers;
-use projets_developpeur_web\projet_4\Model\Classes as Classes;
+use projets_developpeur_web\projet_4\Model\Managers\Manager;
+use projets_developpeur_web\projet_4\Model\Classes\Episode;
 
-abstract class EpisodeManager extends Managers\Manager
+abstract class EpisodeManager extends Manager
 {
 	abstract public function getList();
 	abstract public function getEpisode($info);
-	abstract public function post(Classes\Episode $episode);
-	abstract public function update(Classes\Episode $episode);
+	abstract public function post(Episode $episode);
+	abstract public function update(Episode $episode);
 	abstract public function delete($id);
+	abstract public function count();
 	abstract public function exists(int $id);
 }

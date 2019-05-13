@@ -2,8 +2,7 @@
 
 namespace projets_developpeur_web\projet_4\Model\Managers\MemberManager;
 
-use projets_developpeur_web\projet_4\Model\Classes as Classes;
-use projets_developpeur_web\projet_4\Model\Managers as Managers;
+use projets_developpeur_web\projet_4\Model\Classes\Member;
 
 class MySQLi_MemberManager extends MemberManager
 {
@@ -28,10 +27,10 @@ class MySQLi_MemberManager extends MemberManager
 			$memberData = $q->get_result()->fetch_assoc();
 		}
 
-		return new Classes\Member($memberData);
+		return new Member($memberData);
 	}
 
-	public function create(Classes\Member $member)
+	public function create(Member $member)
 	{
 		$pseudo = $member->pseudo();
 		$password = $member->password();
@@ -103,5 +102,10 @@ class MySQLi_MemberManager extends MemberManager
 		return $q->fetch();
 	}
 
-	public function count(){}
+	public function count()
+	{
+		$result = $this->db->query('SELECT COUNT(*) AS Members FROM members');
+		$count = $result->fetch_assoc();
+		return $count['Members'];
+	}
 }

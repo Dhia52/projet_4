@@ -105,5 +105,9 @@ class PDO_MemberManager extends MemberManager
 		return (bool) $q->fetchColumn();
 	}
 
-	public function count(){}
+	public function count()
+	{
+		$q = $this->db->query('SELECT COUNT(*) FROM members');
+		return $q->fetchColumn();
+	}
 }

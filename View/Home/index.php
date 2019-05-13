@@ -22,7 +22,7 @@ foreach ($list as $episode)
 					<div class="card-body d-flex flex-column justify-content-center">
 						<div class="card-text d-flex flex-column">
 							<h5><?= $this->sanitize($episode->title()) ?></h5>
-							<a href="?controller=episodes&amp;action=episode&amp;id=<?= $this->sanitize($episode->id()) ?>" class="btn btn-primary">Lire</a>
+							<a href="?controller=episodes&amp;action=read&amp;id=<?= $this->sanitize($episode->id()) ?>" class="btn btn-primary">Lire</a>
 						</div>
 					</div>
 					<p class="card-footer">

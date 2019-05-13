@@ -2,8 +2,7 @@
 
 namespace projets_developpeur_web\projet_4\Model\Managers\EpisodeManager;
 
-use projets_developpeur_web\projet_4\Model\Classes as Classes;
-use projets_developpeur_web\projet_4\Model\Managers as Managers;
+use projets_developpeur_web\projet_4\Model\Classes\Episode;
 
 class MySQLi_EpisodeManager extends EpisodeManager
 {
@@ -22,7 +21,7 @@ class MySQLi_EpisodeManager extends EpisodeManager
 
 		while ($data = $q->fetch_assoc())
 		{
-			$list[] = new Classes\Episode($data);
+			$list[] = new Episode($data);
 		}
 
 		return $list;
@@ -36,13 +35,19 @@ class MySQLi_EpisodeManager extends EpisodeManager
 
 		$episodeData = $q->get_result()->fetch_assoc();
 
-		return new Classes\Episode($episodeData);
+		return new Episode($episodeData);
 	}
 
-	public function post(Classes\Episode $episode){}
-	public function update(Classes\Episode $episode){}
+	public function post(Episode $episode){}
+	public function update(Episode $episode){}
 	public function delete($id){}
 
+	public function count()
+	{
+		$result = $this->db->query('SELECT COUNT(*) AS Episodes FROM episodes');
+		$count = $result->fetch_assoc();
+		return $count['Episodes'];
+	}
 	public function exists($id)
 	{
 		$q = $this->db->prepare('SELECT id FROM episodes WHERE id = ?');

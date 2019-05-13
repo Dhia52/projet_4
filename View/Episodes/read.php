@@ -27,7 +27,7 @@ if(isset($_SESSION['id']))
 <?php
 	}
 ?>
-	<form action="episodes.php?id=<?= $episode->id() ?>" method="post">
+	<form action="?controller=comments&amp;action=post&amp;id=<?= $episode->id() ?>" method="post">
 		<textarea name="newComment" rows="3" id="commentArea" class="form-control" placeholder="Ecrivez votre commentaire ici"></textarea>
 		<button type="submit" id="submitComment" class="btn btn-success" disabled="disabled">Commenter</button>
 	</form>
@@ -37,8 +37,8 @@ else
 {
 ?>
 	<div class="row text-center">
-		<p class="col-6">Connectez-vous pour laisser votre avis.</br><a href="sessions.php?action=login" class="btn btn-success">Se connecter</a></p>
-		<p class="col-6">Vous n'avez pas encore de compte ? Inscrivez-vous !</br><a href="sessions.php?action=signIn" class="btn btn-primary">S'inscrire</a></p>
+		<p class="col-6">Connectez-vous pour laisser votre avis.</br><a href="?controller=sessions&amp;action=login" class="btn btn-success">Se connecter</a></p>
+		<p class="col-6">Vous n'avez pas encore de compte ? Inscrivez-vous !</br><a href="?controller=sessions&amp;action=signIn" class="btn btn-primary">S'inscrire</a></p>
 	</div>
 <?php
 }
@@ -50,7 +50,7 @@ foreach ($comments as $comment)
 {
 ?>
 <tr class="row d-flex align-items-center">
-	<td class="col-md-4"><a href="profile.php?id=<?= $comment->authorId() ?>"><?= $comment->author() ?></a></br><small><i>Le <?=$comment->commentDate() ?></br>
+	<td class="col-md-4"><a href="?controller=members&amp;action=show&amp;id=<?= $comment->authorId() ?>"><?= $comment->author() ?></a></br><small><i>Le <?=$comment->commentDate() ?></br>
 <?php
 if(NULL !== $comment->updateDate())
 {
@@ -66,7 +66,8 @@ if(NULL !== $comment->updateDate())
 			<div class="col-10">
 				<?= $comment->comment(); ?>	
 			</div>
-			<div class="col-2 text-sm">
+			<div class="col-2">
+				<small><i>
 <?php
 if(isset($_SESSION['id']))
 {
@@ -85,6 +86,7 @@ if(isset($_SESSION['id']))
 	}
 }
 ?>
+				</i></small>
 			</div>
 		</div>
 	</td>

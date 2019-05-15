@@ -3,7 +3,6 @@
 namespace projets_developpeur_web\projet_4\Controller;
 
 use projets_developpeur_web\projet_4\Model\Managers\Manager;
-use projets_developpeur_web\projet_4\Model as Model;
 use projets_developpeur_web\projet_4\Framework\Configuration;
 use projets_developpeur_web\projet_4\Framework\Controller;
 
@@ -39,6 +38,30 @@ class AdminController extends Controller
 		$this->createView(array(
 			'nb_episodes' => $nb_episodes,
 			'episodesList' => $episodesList));
+	}
+
+	public function listMembers()
+	{
+		$this->userCheck(['Admin', 'Writer', 'Mod']);
+
+		$nb_members = $this->memberManager->count();
+		$membersList = $this->memberManager->getList();
+
+		$this->createView(array(
+			'nb_members' => $nb_members,
+			'membersList' => $membersList));
+	}
+
+	public function listComments()
+	{
+		$this->userCheck(['Admin', 'Writer', 'Mod']);
+
+		$nb_comments = $this->commentManager->count();
+		$commentsList = $this->commentManager->getList();
+
+		$this->createView(array(
+			'nb_comments' => $nb_comments,
+			'commentsList' => $commentsList));
 	}
 
 	public function index()

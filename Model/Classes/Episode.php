@@ -86,7 +86,7 @@ class Episode
 	public function setPostDate($postDate)
 	{
 		$postDate = new \DateTime($postDate);
-		$date = $postDate->format("d/m/Y");
+		$date = $postDate->format('d/m/Y à H\hi');
 		$this->postDate = $date;
 	}
 	
@@ -95,7 +95,7 @@ class Episode
 		if(isset($updateDate))
 		{
 			$updateDate = new \DateTime($updateDate);
-			$date = $updateDate->format("d/m/Y");
+			$date = $updateDate->format('d/m/Y à H\hi');
 			$this->updateDate = $date;
 		}
 	}

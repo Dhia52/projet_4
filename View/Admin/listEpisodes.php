@@ -24,7 +24,7 @@ require('View/adminNav.php');
 foreach($episodesList as $episode)
 {
 ?>
-			<tr>
+			<tr id="episode<?= $episode->id() ?>">
 				<td><a href="?controller=episodes&amp;action=read&amp;id=<?= $episode->id() ?>"><?= $episode->id() ?></a></td>
 				<td><?= $this->sanitize($episode->title()) ?></td>
 				<td><?= $episode->postDate() ?></td>

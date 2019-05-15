@@ -6,7 +6,19 @@ use projets_developpeur_web\projet_4\Model\Classes\Member;
 
 class MySQLi_MemberManager extends MemberManager
 {
-	public function getList(){}
+	public function getList()
+	{
+		$list = [];
+
+		$q = $this->db->query('SELECT * FROM members ORDER BY category, id');
+
+		while($data = $q->fetch_assoc())
+		{
+			$list[] = new Member($data);
+		}
+
+		return $list;
+	}
 
 	public function getMember($info)
 	{

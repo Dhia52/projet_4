@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark container-fluid fixed-top">
 	<div class="container-fluid">
-		<span class="navbar-brand">Administration</span>
+		<span class="navbar-brand"><a href="?controller=admin" class="text-light">Administration</a></span>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle Navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>

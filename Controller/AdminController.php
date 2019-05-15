@@ -21,17 +21,29 @@ class AdminController extends Controller
 		$this->memberManager = Manager::setManager('MemberManager', Configuration::get('DB_API'));
 	}
 
-	protected function userCheck()
+	protected function userCheck(array $categories)
 	{
-		if(empty($_SESSION['category']) || !(in_array($_SESSION['category'], array('Admin', 'Writer', 'Mod'))))
+		if(empty($_SESSION['category']) || !(in_array($_SESSION['category'], $categories)))
 		{
 			header('Location: .');
 		}
 	}
 
+	public function listEpisodes()
+	{
+		$this->userCheck(['Admin', 'Writer']);
+
+		$nb_episodes = $this->episodeManager->count();
+		$episodesList = $this->episodeManager->getList();
+
+		$this->createView(array(
+			'nb_episodes' => $nb_episodes,
+			'episodesList' => $episodesList));
+	}
+
 	public function index()
 	{
-		$this->userCheck();
+		$this->userCheck(['Admin', 'Writer', 'Mod']);
 
 		$nb_episodes = $this->episodeManager->count();
 		$nb_members = $this->memberManager->count();

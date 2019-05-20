@@ -38,9 +38,24 @@ class MySQLi_EpisodeManager extends EpisodeManager
 		return new Episode($episodeData);
 	}
 
-	public function post(Episode $episode){}
+	public function post(Episode $episode)
+	{
+		$title = $episode->title();
+		$content = $episode->content();
+
+		$q = $this->db->prepare('INSERT INTO episodes (title, content, postDate) VALUES (?, ?, NOW())');
+		$q->bind_param('ss', $title, $content);
+		$q->execute();
+	}
+
 	public function update(Episode $episode){}
-	public function delete($id){}
+
+	public function delete($id)
+	{
+		$q = $this->db->prepare('DELETE FROM episodes WHERE id = ?');
+		$q->bind_param('i', $id);
+		$q->execute();
+	}
 
 	public function count()
 	{

@@ -13,7 +13,7 @@ $this->setJavascript(['episodes.js']);?>
 	<div class="card">
 	<h1 class="card-header"><?= $this->sanitize($episode->title()) ?></h1>
 		<div class="card-body">
-			<p class="card-text"><?= $this->sanitize($episode->content()) ?></p>
+			<p class="card-text"><?= $episode->content() ?></p>
 		</div>
 		<div class="card-footer">
 			<h3>Commentaires</h3>

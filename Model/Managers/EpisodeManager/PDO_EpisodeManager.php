@@ -38,9 +38,22 @@ class PDO_EpisodeManager extends EpisodeManager
 		return new Episode($episodeData);
 	}
 
-	public function post(Episode $episode){}
+	public function post(Episode $episode)
+	{
+		$q = $this->db->prepare('INSERT INTO episodes (title, content, postDate) VALUES (:title, :content, NOW())');
+		$q->bindValue(':title', $episode->title(), \PDO::PARAM_STR);
+		$q->bindValue(':content', $episode->content(), \PDO::PARAM_STR);
+		$q->execute();
+	}
+
 	public function update(Episode $episode){}
-	public function delete($id){}
+
+	public function delete($id)
+	{
+		$q = $this->db->prepare('DELETE FROM episodes WHERE id = :id');
+		$q->bindValue(':id', $id, \PDO::PARAM_INT);
+		$q->execute();
+	}
 
 	public function count()
 	{

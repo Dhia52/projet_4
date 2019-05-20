@@ -5,6 +5,7 @@ namespace projets_developpeur_web\projet_4\Controller;
 use projets_developpeur_web\projet_4\Model\Managers\Manager;
 use projets_developpeur_web\projet_4\Framework\Configuration;
 use projets_developpeur_web\projet_4\Framework\Controller;
+use projets_developpeur_web\projet_4\Model\Classes\Episode;
 
 
 class AdminController extends Controller
@@ -44,7 +45,50 @@ class AdminController extends Controller
 	{
 		$this->userCheck(['Admin', 'Writer']);
 
+		if($this->request->exists('title') && $this->request->exists('episodeContent'))
+		{
+			$episode = new Episode(array(
+				'title' => $this->request->getParam('title'),
+				'content' => $this->request->getParam('episodeContent')
+			));
+
+			$this->episodeManager->post($episode);
+			\header('Location: .?controller=admin&action=listEpisodes');
+		}
 		$this->createView();
+	}
+
+	protected function editEpisode()
+	{
+		$this->userCheck(['Admin', 'Writer']);
+
+		if($this->request->exists('title') && $this->request->exists('episodeContent'))
+		{
+			$episode = new Episode(array(
+				'title' => $this->request->getParam('title'),
+				'content' => $this->request->getParam('episodeContent')
+			));
+
+			$this->episodeManager->post($episode);
+			\header('Location: .?controller=admin&action=listEpisodes');
+		}
+		$this->createView();
+	}
+
+	protected function deleteEpisode()
+	{
+		$this->userCheck(['Admin', 'Writer']);
+
+		if($this->request->exists('id'))
+		{
+			$episodeId = (int) $this->request->getParam('id');
+			$this->episodeManager->delete($episodeId);
+			\header('Location: .?controller=admin&action=listEpisodes');
+		}
+		else
+		{
+			throw new \Exception('Missing episode id to execute action');
+		}
 	}
 
 	public function listMembers()

@@ -2,59 +2,63 @@
 
 namespace projets_developpeur_web\projet_4\Controller;
 
-use projets_developpeur_web\projet_4\Model\Managers as Managers;
+use projets_developpeur_web\projet_4\Model\Managers\Manager;
 use projets_developpeur_web\projet_4\Model\Classes\Comment;
-use projets_developpeur_web\projet_4\Model as Model;
-use projets_developpeur_web\projet_4\Framework as Framework;
-use projets_developpeur_web\projet_4 as project;
+use projets_developpeur_web\projet_4\Framework\Controller;
+use projets_developpeur_web\projet_4\Framework\Configuration;
 
 
-class CommentsController extends Framework\Controller
+class CommentsController extends Controller
 {
 	protected $commentManager;
 
 	public function __construct()
 	{
-		$this->commentManager = Managers\Manager::setManager('CommentManager', Framework\Configuration::get('DB_API'));
+		$this->commentManager = Manager::setManager('CommentManager', Configuration::get('DB_API'));
 	}
 
 	public function post()
 	{
-		if(isset($_SESSION['id']) && isset($_GET['id']))
+		if(isset($_SESSION['id']) && $this->request->exists('id'))
 		{
-			if(isset($_POST['newComment']) && $_POST['newCommment'] !== '')
+			if($this->request->exists('newComment'))
 			{
-				$episodeId = (int) $_GET['id'];
+				$episodeId = (int) $this->request->getParam('id');
 				$comment = new Comment(array(
-					'comment' => $_POST['newComment'],
+					'comment' => $this->request->getParam('newComment'),
 					'authorId' => $_SESSION['id'],
 					'episodeId' => $episodeId));
 				$this->commentManager->post($comment);
+
+				header('Location: .?controller=episodes&action=read&id=' . $episodeId);
 			}
 			else
 			{
 				throw new \Exception('Cannot post empty comment');
 			}
 		}
-		header('Location: .?controller=episodes&action=read&id=' . $episodeId);
+		else
+		{
+			throw new \Exception('Impossible request');
+		}
 	}
 
 	public function edit()
 	{
-		if(isset($_GET['id']))
+		if($this->request->exists('id'))
 		{
-			if(isset($_POST['comment']))
+			if($this->request->exists('comment'))
 			{
 				$updatedComment = new Comment(array(
-					'id' => $_GET['id'],
-					'comment' => $_POST['comment']));
-				$this->commentManager->update($updatedComment);
+					'id' => $this->request->getParam('id'),
+					'comment' => $this->request->getParam('comment')));
+				$this->commentManager->update($updatedComment, 'edit');
 				$episodeId = $this->commentManager->getComment($updatedComment->id())->episodeId();
 				header('Location: .?controller=episodes&action=read&id=' . $episodeId);
 			}
 			else
 			{
-				$commentId = $_GET['id'];
+				$commentId = $this->request->getParam('id');
 				if($this->commentManager->exists($commentId))
 				{
 					$comment = $this->commentManager->getComment($commentId);
@@ -81,30 +85,82 @@ class CommentsController extends Framework\Controller
 
 	public function delete()
 	{
-		if(isset($_GET['id']))
+		if(isset($_SESSION['category']))
 		{
-			$commentId = (int) $_GET['id'];
-			if($this->commentManager->exists($commentId))
+			if($this->request->exists('id'))
 			{
-				$comment = $this->commentManager->getComment($commentId);
-				if($_SESSION['id'] === $comment->authorId())
+				$commentId = (int) $this->request->getParam('id');
+				if($this->commentManager->exists($commentId))
 				{
-					$this->commentManager->delete($commentId);
-					\header('Location: .?controller=episodes&action=read&id=' . $comment->episodeId());
+					$comment = $this->commentManager->getComment($commentId);
+					if($_SESSION['id'] === $comment->authorId() || \in_array($_SESSION['category'], ['Admin', 'Writer', 'Mod']))
+					{
+						$this->commentManager->delete($commentId);
+						\header('Location: .?controller=episodes&action=read&id=' . $comment->episodeId());
+					}
+					else
+					{
+						throw new \Exception('Unauthorised action');
+					}
 				}
 				else
 				{
-					throw new \Exception('Unauthorised action');
+					throw new \Exception('Comment does not exist');
 				}
 			}
 			else
 			{
-				throw new \Exception('Comment does not exist');
+				\header('Location: .?controller=episodes&action=list');
 			}
 		}
 		else
 		{
-			\header('Location: .?controller=episodes&action=list');
+			throw new \Exception('Unauthorised action');
+		}
+	}
+
+	public function report()
+	{
+		if(isset($_SESSION['category']))
+		{
+			if($this->request->exists('id'))
+			{
+				$commentId = (int) $this->request->getParam('id');
+
+				if($this->commentManager->exists($commentId))
+				{
+					$comment = $this->commentManager->getComment($commentId);
+					$episodeId = $comment->episodeId();
+					if(!$comment->reported())
+					{
+						$this->commentManager->update($comment, 'report');
+					}
+					else
+					{
+						if(\in_array($_SESSION['category'], ['Admin', 'Writer', 'Mod']))
+						{
+							$this->commentManager->update($comment, 'unreport');
+						}
+						else
+						{
+							throw new \Exception('Unauthorised action');
+						}
+					}
+					header('Location: .?controller=episodes&action=read&id=' . $episodeId);
+				}
+				else
+				{
+					throw new \Exception('Comment not found');
+				}
+			}
+			else
+			{
+				throw new \Exception('Missing comment id');
+			}
+		}
+		else
+		{
+			throw new \Exception('Unauthorised action');
 		}
 	}
 

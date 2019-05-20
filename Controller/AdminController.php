@@ -40,6 +40,13 @@ class AdminController extends Controller
 			'episodesList' => $episodesList));
 	}
 
+	protected function writeEpisode()
+	{
+		$this->userCheck(['Admin', 'Writer']);
+
+		$this->createView();
+	}
+
 	public function listMembers()
 	{
 		$this->userCheck(['Admin', 'Writer', 'Mod']);

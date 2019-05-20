@@ -30,10 +30,24 @@ class MembersController extends Framework\Controller
 				$member = $this->memberManager->getMember($memberId);
 				$nb_comments = $this->commentManager->count($memberId, 'member');
 				$commentsList = $this->commentManager->getList($memberId, 'member');
+
+				if(isset($_SESSION['id']))
+				{
+					$commentTdClass = 'col-md-7';
+					$extraTdClass = 'col-md-2';
+				}
+				else
+				{
+					$commentTdClass = 'col-md-9';
+					$extraTdClass = '';
+				}
+
 				$this->createView(array(
 					'member' => $member,
 					'nb_comments' => $nb_comments,
-					'list' => $commentsList));
+					'list' => $commentsList,
+					'commentTdClass' => $commentTdClass,
+					'extraTdClass' => $extraTdClass));
 			}
 			else
 			{
@@ -48,6 +62,19 @@ class MembersController extends Framework\Controller
 
 	public function edit()
 	{
+		$memberId = (int) $this->request->getParam('id');
+		if(isset($_SESSION['id']) && ($_SESSION['id'] === $memberId || in_array($_SESSION['category'], ['Admin', 'Writer'])))
+		{
+			$member = $this->memberManager->getMember($memberId);
+			$message = '';
+			$this->createView(array(
+				'member' => $member,
+				'message' => $message));
+		}
+		else
+		{
+			throw new \Exception('Denied access');
+		}
 	}
 
 	public function delete()

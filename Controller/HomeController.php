@@ -22,4 +22,9 @@ class HomeController extends Framework\Controller
 		$list = $this->episodeManager->getList(6);
 		$this->createView(array('list' => $list));
 	}
+
+	public function about()
+	{
+		$this->createView();
+	}
 }

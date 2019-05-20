@@ -4,7 +4,7 @@ $this->setJavascript(['episodes.js']);?>
 
 <?php require('View/nav.php'); ?>
 <div class="container-fluid">
-	<div class="card text-center">
+	<div class="card text-center" id="card">
 		<div class="card-body">
 			<h2 class="card-title">Episodes</h2>
 			<div class="row justify-content-around">
@@ -35,7 +35,7 @@ foreach ($list as $episode)
 ?>
 			</div>
 			<div class="card-footer">
-				<a href="#" class="btn btn-primary">Remonter</a>
+				<a href="?controller=episodes&amp;action=list#card" class="btn btn-primary">Remonter</a>
 			</div>
 		</div>
 	</div>

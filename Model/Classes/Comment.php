@@ -4,13 +4,14 @@ namespace projets_developpeur_web\projet_4\Model\Classes;
 
 class Comment
 {
-	private $id;
-	private $authorId;
-	private $author;
-	private $episodeId;
-	private $comment;
-	private $commentDate;
-	private $updateDate;
+	protected $id;
+	protected $authorId;
+	protected $author;
+	protected $episodeId;
+	protected $comment;
+	protected $commentDate;
+	protected $updateDate;
+	protected $reported;
 
 	public function __construct(array $commentData)
 	{
@@ -63,6 +64,11 @@ class Comment
 	public function updateDate()
 	{
 		return $this->updateDate;
+	}
+
+	public function reported()
+	{
+		return $this->reported;
 	}
 	
 	public function setId($id)
@@ -128,6 +134,35 @@ class Comment
 			$updateDate = new \DateTime($updateDate);
 			$date = $updateDate->format('d/m/Y à H\hi');
 			$this->updateDate = $date;
+		}
+	}
+
+	public function setReported($value)
+	{
+		$value = (int) $value;
+
+		if($value === 1)
+		{
+			$this->reported = true;
+		}
+		else
+		{
+			$this->reported = false;
+		}
+	}
+
+	public function truncate()
+	{
+		$length = \strlen($this->comment);
+
+		if($length > 50)
+		{
+			$string = \substr($this->comment, 0, 50);
+			return $string;
+		}
+		else
+		{
+			return $this->comment();
 		}
 	}
 }

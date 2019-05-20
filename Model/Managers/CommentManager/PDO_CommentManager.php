@@ -16,7 +16,7 @@ class PDO_CommentManager extends CommentManager
 			switch($class)
 			{
 				case 'episode':
-					$request = 'SELECT c.id, c.authorId, c.comment, c.commentDate, c.updateDate, m.pseudo AS author FROM comments AS c INNER JOIN members AS m ON c.authorId = m.id WHERE episodeId = :id ORDER BY c.id DESC';
+					$request = 'SELECT c.id, c.authorId, c.comment, c.commentDate, c.updateDate, c.reported, m.pseudo AS author FROM comments AS c INNER JOIN members AS m ON c.authorId = m.id WHERE episodeId = :id ORDER BY c.id DESC';
 					break;
 
 				case 'member':
@@ -30,7 +30,7 @@ class PDO_CommentManager extends CommentManager
 		}
 		else
 		{
-			$q = $this->db->query('SELECT * FROM comments ORDER BY id DESC');
+			$q = $this->db->query('SELECT * FROM comments ORDER BY reported DESC, reportDate');
 		}
 		
 		while ($data = $q->fetch(\PDO::FETCH_ASSOC))
@@ -61,12 +61,29 @@ class PDO_CommentManager extends CommentManager
 		$q->execute();
 	}
 
-	public function update(Comment $comment)
+	public function update(Comment $comment, $action)
 	{
-		$q = $this->db->prepare('UPDATE comments SET comment = :comment, updateDate = NOW() WHERE id = :id');
-		$q->bindValue(':comment', $comment->comment(), \PDO::PARAM_STR);
-		$q->bindValue(':id', $comment->id(), \PDO::PARAM_INT);
-		$q->execute();
+		switch($action)
+		{
+		case 'edit':
+			$q = $this->db->prepare('UPDATE comments SET comment = :comment, updateDate = NOW() WHERE id = :id');
+			$q->bindValue(':comment', $comment->comment(), \PDO::PARAM_STR);
+			$q->bindValue(':id', $comment->id(), \PDO::PARAM_INT);
+			$q->execute();
+			break;
+		case 'report':
+			$q = $this->db->prepare('UPDATE comments SET reported = 1, reportDate = NOW() WHERE id = :id');
+			$q->bindValue(':id', $comment->id(), \PDO::PARAM_INT);
+			$q->execute();
+			break;
+		case 'unreport':
+			$q = $this->db->prepare('UPDATE comments SET reported = 0 WHERE id = :id');
+			$q->bindValue(':id', $comment->id(), \PDO::PARAM_INT);
+			$q->execute();
+			break;
+		default:
+			throw new \Exception('Unkown action');
+		}
 	}
 
 	public function delete($id)
@@ -74,6 +91,10 @@ class PDO_CommentManager extends CommentManager
 		$q = $this->db->prepare('DELETE FROM comments WHERE id = :id');
 		$q->bindValue(':id', $id, \PDO::PARAM_INT);
 		$q->execute();
+	}
+
+	public function report($id)
+	{
 	}
 
 	public function exists($id)

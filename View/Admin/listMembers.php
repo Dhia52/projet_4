@@ -29,7 +29,7 @@ foreach($membersList as $member)
 				<td><?= $member->signDate() ?></td>
 				<td><?= $member->lastConnexion() ?></td>
 				<td><small><i>
-					<a href="?controller=admin&amp;action=editMember&amp;id=<?= $member->id() ?>" class="text-primary">Modifier</a><br/>
+					<a href="?controller=members&amp;action=edit&amp;id=<?= $member->id() ?>" class="text-primary">Modifier</a><br/>
 					<a href="?controller=members&amp;action=delete&amp;id=<?= $member->id() ?>" class="text-danger">Bannir</a>
 				</i></small></td>
 			</tr>

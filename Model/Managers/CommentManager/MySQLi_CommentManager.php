@@ -16,7 +16,7 @@ class MySQLi_CommentManager extends CommentManager
 			switch($class)
 			{
 			case 'episode':
-				$request = 'SELECT c.id, c.authorId, c.comment, c.commentDate, c.updateDate, m.pseudo AS author FROM comments AS c INNER JOIN members AS m ON c.authorId = m.id WHERE episodeId = ? ORDER BY c.id DESC';
+				$request = 'SELECT c.id, c.authorId, c.comment, c.commentDate, c.updateDate, c.reported, m.pseudo AS author FROM comments AS c INNER JOIN members AS m ON c.authorId = m.id WHERE episodeId = ? ORDER BY c.id DESC';
 				break;
 
 			case 'member':
@@ -32,7 +32,7 @@ class MySQLi_CommentManager extends CommentManager
 		}
 		else
 		{
-			$result = $this->db->query('SELECT * FROM comments ORDER BY id DESC');
+			$result = $this->db->query('SELECT * FROM comments ORDER BY reported DESC, reportDate');
 		}
 
 
@@ -66,14 +66,31 @@ class MySQLi_CommentManager extends CommentManager
 		$q->execute();
 	}
 
-	public function update(Comment $comment)
+	public function update(Comment $comment, $action)
 	{
 		$commentId = $comment->id();
-		$content = $comment->comment();
 
-		$q = $this->db->prepare('UPDATE comments SET comment = ?, updateDate = NOW() WHERE id = ?');
-		$q->bind_param('si', $content, $commentId);
-		$q->execute();
+		switch($action)
+		{
+		case 'edit':
+			$content = $comment->comment();
+			$q = $this->db->prepare('UPDATE comments SET comment = ?, updateDate = NOW() WHERE id = ?');
+			$q->bind_param('si', $content, $commentId);
+			$q->execute();
+			break;
+		case 'report':
+			$q = $this->db->prepare('UPDATE comments SET reported = 1, reportDate = NOW() WHERE id = ?');
+			$q->bind_param('i', $commentId);
+			$q->execute();
+			break;
+		case 'unreport':
+			$q = $this->db->prepare('UPDATE comments SET reported = 0 WHERE id = ?');
+			$q->bind_param('i', $commentId);
+			$q->execute();
+			break;
+		default:
+			throw new \Exception('Unknown action');
+		}
 	}
 
 	public function delete($id)

@@ -27,9 +27,9 @@ if(isset($_SESSION['id']))
 <?php
 	}
 ?>
-	<form action="?controller=comments&amp;action=post&amp;id=<?= $episode->id() ?>" method="post">
+	<form action="?controller=comments&amp;action=post&amp;id=<?= $episode->id() ?>" method="post" class="my-3">
 		<textarea name="newComment" rows="3" id="commentArea" class="form-control" placeholder="Ecrivez votre commentaire ici"></textarea>
-		<button type="submit" id="submitComment" class="btn btn-success" disabled="disabled">Commenter</button>
+		<button type="submit" id="submitComment" class="btn btn-success mt-2" disabled="disabled">Commenter</button>
 	</form>
 <?php
 }
@@ -49,47 +49,56 @@ else
 foreach ($comments as $comment)
 {
 ?>
-<tr class="row d-flex align-items-center">
-	<td class="col-md-4"><a href="?controller=members&amp;action=show&amp;id=<?= $comment->authorId() ?>"><?= $comment->author() ?></a></br><small><i>Le <?=$comment->commentDate() ?></br>
+<tr class="row d-flex align-items-center border-bottom border-dark">
 <?php
-if(NULL !== $comment->updateDate())
-{
-?>
-		Màj le : <?= $comment->updateDate() ?></br>
-<?php
-}
-?>
-		</i></small>
-	</td>
-	<td class="col-md-8">
-		<div class="row">
-			<div class="col-10">
-				<?= $comment->comment(); ?>	
-			</div>
-			<div class="col-2">
-				<small><i>
-<?php
-if(isset($_SESSION['id']))
-{
-	if($_SESSION['id'] === $comment->authorId())
+	if($comment->reported())
 	{
 ?>
-	<a href="?controller=comments&amp;action=edit&amp;id=<?= $comment->id() ?>" class="text-primary">Modifier</a><br/>
-	<a href="?controller=comments&amp;action=delete&amp;id=<?= $comment->id() ?>" class="text-danger">Supprimer</a>
+		<td class="col-12 table-danger text-center">Ce commentaire a été signalé</td>
 <?php
 	}
 	else
 	{
 ?>
-	<a href="?controller=comments&amp;action=report&amp;id=<?= $comment->id() ?>" class="text-danger">Signaler</a>
+		<td class="col-md-3"><a href="?controller=members&amp;action=show&amp;id=<?= $comment->authorId() ?>"><?= $comment->author() ?></a></br><small><i>Le <?=$comment->commentDate() ?></br>
 <?php
-	}
-}
+		if(NULL !== $comment->updateDate())
+		{
 ?>
-				</i></small>
-			</div>
-		</div>
-	</td>
+			Màj le : <?= $comment->updateDate() ?></br>
+<?php
+		}
+?>
+		</i></small>
+		</td>
+		<td class="<?= $commentTdClass ?>">
+			<?= $comment->comment(); ?>	
+		</td>
+<?php
+		if(isset($_SESSION['id']))
+		{
+?>
+			<td class="<?= $extraTdClass ?>"><small><i>
+<?php
+			if($_SESSION['id'] === $comment->authorId())
+			{
+?>
+				<a href="?controller=comments&amp;action=edit&amp;id=<?= $comment->id() ?>" class="text-primary">Modifier</a><br/>
+				<a href="?controller=comments&amp;action=delete&amp;id=<?= $comment->id() ?>" class="text-danger">Supprimer</a>
+<?php
+			}
+			else
+			{
+?>
+				<a href="?controller=comments&amp;action=report&amp;id=<?= $comment->id() ?>" class="text-danger">Signaler</a>
+<?php
+			}
+?>
+			</i></small></td>
+<?php
+		}
+	}
+?>
 </tr>
 <?php
 }

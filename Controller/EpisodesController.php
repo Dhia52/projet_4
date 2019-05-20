@@ -47,11 +47,24 @@ class EpisodesController extends Framework\Controller
 				$nextDisable = '';
 			}
 
+			if(isset($_SESSION['id']))
+			{
+				$commentTdClass = 'col-md-7';
+				$extraTdClass = 'col-md-2';
+			}
+			else
+			{
+				$commentTdClass = 'col-md-9';
+				$extraTdClass = '';
+			}
+
 			$this->createView(array(
 				'episode' => $episode,
 				'comments' => $comments,
 				'nextDisable' => $nextDisable,
-				'prevDisable' => $prevDisable));
+				'prevDisable' => $prevDisable,
+				'commentTdClass' => $commentTdClass,
+				'extraTdClass' => $extraTdClass));
 		}
 		else
 		{

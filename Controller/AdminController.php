@@ -45,37 +45,116 @@ class AdminController extends Controller
 	{
 		$this->userCheck(['Admin', 'Writer']);
 
-		if($this->request->exists('title') && $this->request->exists('episodeContent'))
-		{
-			$episode = new Episode(array(
-				'title' => $this->request->getParam('title'),
-				'content' => $this->request->getParam('episodeContent')
-			));
+		$message = '';
+		$content = '';
+		$episodeId = '';
+		$title = '';
 
-			$this->episodeManager->post($episode);
-			\header('Location: .?controller=admin&action=listEpisodes');
+		if($_POST)
+		{
+
+			$episode = new Episode(array());
+			if($this->request->exists('id'))
+			{
+				$episodeId = (int) $this->request->getParam('id');
+				if($episodeId > 0 && !$this->episodeManager->exists($episodeId))
+				{
+					$episode->setId($episodeId);
+				}
+			}
+			if($this->request->exists('title') && $this->request->exists('episodeContent'))
+			{
+				$episode->setTitle($this->request->getParam('title'));
+				$episode->setContent($this->request->getParam('episodeContent'));
+
+				$this->episodeManager->post($episode);
+				\header('Location: .?controller=admin&action=listEpisodes');
+			}
+			else
+			{
+				if($this->request->exists('title'))
+				{
+					$title = $this->request->getParam('title');
+				}
+				if($this->request->exists('content'))
+				{
+					$content = $this->request->getParam('content');
+				}
+				$message = 'Veuillez remplir les champs titre et texte.';
+			}
 		}
-		$this->createView();
+		$this->createView(array(
+			'message' => $message,
+			'episodeId' => $episodeId,
+			'title' => $title,
+			'content' => $content));
 	}
 
 	protected function editEpisode()
 	{
 		$this->userCheck(['Admin', 'Writer']);
 
-		if($this->request->exists('title') && $this->request->exists('episodeContent'))
+		if($this->request->exists('episodeId'))
 		{
-			$episode = new Episode(array(
-				'title' => $this->request->getParam('title'),
-				'content' => $this->request->getParam('episodeContent')
-			));
+			$episodeId = (int) $this->request->getParam('episodeId');
+			$message = '';
 
-			$this->episodeManager->post($episode);
-			\header('Location: .?controller=admin&action=listEpisodes');
+			if($this->episodeManager->exists($episodeId))
+			{
+				$episode = $this->episodeManager->getEpisode($episodeId);
+				$content = $episode->content();
+				$title = $episode->title();
+
+				if($_POST)
+				{
+					$updateData = [];
+					foreach($_POST as $key => $value)
+					{
+						if($this->request->exists($key))
+						{
+							$updateData[$key] = $value;
+						}
+					}
+					
+
+					if($this->request->exists('id'))
+					{
+						$updateData['id'] = (int) $updateData['id'];
+						if($this->episodeManager->exists($updateData['id']))
+						{
+							$message = "Impossible de déplacer l'épisode à la position souhaitée";
+						}
+						else
+						{
+							$this->episodeManager->update($updateData, $episodeId);
+							\header('Location: .?controller=admin&action=listEpisodes');
+						}
+					}
+					else
+					{
+						$this->episodeManager->update($updateData, $episodeId);
+						\header('Location: .?controller=admin&action=listEpisodes');
+					}
+				}
+
+				$this->createView(array(
+					'message' => $message,
+					'episodeId' => $episodeId,
+					'title' => $title,
+					'content' => $content));
+			}
+			else
+			{
+				throw new \Exception('Episode does not exist');
+			}
 		}
-		$this->createView();
+		else
+		{
+			throw new \Exception('Missing episode id');
+		}
 	}
 
-	protected function deleteEpisode()
+	public function deleteEpisode()
 	{
 		$this->userCheck(['Admin', 'Writer']);
 

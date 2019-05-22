@@ -30,7 +30,7 @@ foreach($episodesList as $episode)
 				<td><?= $episode->postDate() ?></td>
 				<td><?= $episode->updateDate() ?></td>
 				<td><small><i>
-					<a href="?controller=admin&amp;action=editEpisode&amp;id=<?= $episode->id() ?>" class="text-primary">Modifier</a><br/>
+					<a href="?controller=admin&amp;action=editEpisode&amp;episodeId=<?= $episode->id() ?>" class="text-primary">Modifier</a><br/>
 					<a href="?controller=admin&amp;action=deleteEpisode&amp;id=<?= $episode->id() ?>" class="text-danger">Supprimer</a>
 				</i></small></td>
 			</tr>

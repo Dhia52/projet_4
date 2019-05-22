@@ -62,18 +62,37 @@ class MembersController extends Framework\Controller
 
 	public function edit()
 	{
-		$memberId = (int) $this->request->getParam('id');
-		if(isset($_SESSION['id']) && ($_SESSION['id'] === $memberId || in_array($_SESSION['category'], ['Admin', 'Writer'])))
+		if($this->request->exists('id'))
 		{
-			$member = $this->memberManager->getMember($memberId);
-			$message = '';
-			$this->createView(array(
-				'member' => $member,
-				'message' => $message));
+			$memberId = (int) $this->request->getParam('id');
+			if(isset($_SESSION['id']) && ($_SESSION['id'] === $memberId || in_array($_SESSION['category'], ['Admin', 'Writer'])))
+			{
+				if($this->memberManager->exists($memberId))
+				{
+					$member = $this->memberManager->getMember($memberId);
+					$message = '';
+
+					if(empty($_POST))
+					{
+						echo '$_POST !';
+					}
+					$this->createView(array(
+						'member' => $member,
+						'message' => $message));
+				}
+				else
+				{
+					throw new \Exception('Member not found');
+				}
+			}
+			else
+			{
+				throw new \Exception('Denied access');
+			}
 		}
 		else
 		{
-			throw new \Exception('Denied access');
+			throw new \Exception('Missing member id');
 		}
 	}
 

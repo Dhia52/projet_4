@@ -4,7 +4,7 @@ $this->setJavascript(["memberEdit.js"]);
 ?>
 
 <?php require('View/nav.php'); ?>
-<form method="post" action="?controller=members&amp;action=edit">
+<form method="post" action="?controller=members&amp;action=edit&amp;id=<?= $member->id() ?>">
 	<div class="form-row m-3">
 		<h2>Modification du compte</h2>
 		<p class="text-danger"><?= $message ?></p>
@@ -59,6 +59,6 @@ else
 		</div>
 	</div>
 	<div class="form-row m-3">
-		<div class="col-12"><button type="submit" class="btn btn-primary" disabled="disabled">Sauvegarder</button></div>
+		<div class="col-12"><button type="submit" class="btn btn-primary">Sauvegarder</button></div>
 	</div>
 </form>

@@ -48,7 +48,38 @@ class MySQLi_EpisodeManager extends EpisodeManager
 		$q->execute();
 	}
 
-	public function update(Episode $episode){}
+	public function update(array $data, int $episodeId)
+	{
+		foreach($data as $key => $value)
+		{
+		echo $episodeId . '<br>';
+			switch($key)
+			{
+			case 'id':
+				$r = $this->db->prepare('UPDATE episodes SET id = ? WHERE id = ?');
+				$r->bind_param('ii', $value, $episodeId);
+				$r->execute();
+				$episodeId = $value;
+				break;
+			case 'title':
+				$r = $this->db->prepare('UPDATE episodes SET title = ? WHERE id = ?');
+				$r->bind_param('si', $value, $episodeId);
+				$r->execute();
+				break;
+			case 'content':
+				$r = $this->db->prepare('UPDATE episodes SET content = ? WHERE id = ?');
+				$r->bind_param('si', $value, $episodeId);
+				$r->execute();
+				break;
+			default:
+				throw new \Exception("Incorrect parameter $key given for episode update");
+			}
+		}
+
+		$q = $this->db->prepare('UPDATE episodes SET updateDate = NOW() WHERE id = ?');
+		$q->bind_param('i', $episodeId);
+		$q->execute();
+	}
 
 	public function delete($id)
 	{

@@ -2,22 +2,20 @@
 
 namespace projets_developpeur_web\projet_4\Controller;
 
-use projets_developpeur_web\projet_4\Model\Managers as Managers;
-use projets_developpeur_web\projet_4\Model\Classes\Member;
-use projets_developpeur_web\projet_4\Model as Model;
-use projets_developpeur_web\projet_4\Framework as Framework;
-use projets_developpeur_web\projet_4 as project;
+use projets_developpeur_web\projet_4\Model\Managers\Manager;
+use projets_developpeur_web\projet_4\Framework\Controller;
+use projets_developpeur_web\projet_4\Framework\Configuration;
 
 
-class MembersController extends Framework\Controller
+class MembersController extends Controller
 {
 	protected $memberManager;
 	protected $commentManager;
 
 	public function __construct()
 	{
-		$this->memberManager = Managers\Manager::setManager('MemberManager', Framework\Configuration::get('DB_API'));
-		$this->commentManager = Managers\Manager::setManager('CommentManager', Framework\Configuration::get('DB_API'));
+		$this->memberManager = Manager::setManager('MemberManager', Configuration::get('DB_API'));
+		$this->commentManager = Manager::setManager('CommentManager', Configuration::get('DB_API'));
 	}
 
 	public function show()
@@ -71,14 +69,77 @@ class MembersController extends Framework\Controller
 				{
 					$member = $this->memberManager->getMember($memberId);
 					$message = '';
+					$confirmation = '';
 
-					if(empty($_POST))
+					if(!empty($_POST))
 					{
-						echo '$_POST !';
+						$updateData = [];
+						if($this->request->exists('pseudo'))
+						{
+							$newPseudo = $this->request->getParam('pseudo');
+							$membersList = $this->memberManager->getList($memberId);
+							if(in_array($newPseudo, $membersList))
+							{
+								$message .= "Le nom d'utilisateur $newPseudo ne peut être attribué.<br/>";
+							}
+							else
+							{
+								$updateData['pseudo'] = $newPseudo;
+								$confirmation .= "Changement de nom d'utilisateur effectué avec succès<br/>";
+								$_SESSION['pseudo'] = $newPseudo;
+							}
+						}
+
+						if($this->request->exists('newPassword'))
+						{
+							if($this->request->exists('oldPassword') && $this->request->exists('confirmPassword'))
+							{
+								$newPassword = $this->request->getParam('newPassword');
+								$oldPassword = $this->request->getParam('oldPassword');
+								if(!(password_verify($oldPassword, $member->password())))
+								{
+									$message .= 'Ancien mot de passe erroné.';
+								}
+								elseif(strlen($newPassword) < 8)
+								{
+									$message .= 'Nouveau mot de passe trop court';
+								}
+								elseif($newPassword !== $this->request->getParam('confirmPassword'))
+								{
+									$message .= 'Veuillez resaisir le nouveau mot de passe.';
+								}
+								else
+								{
+									$updateData['password'] = password_hash($newPassword, PASSWORD_DEFAULT);
+									$confirmation .= 'Mot de passe modifié avec succès<br/>';
+								}
+							}
+							else
+							{
+								$message .= 'Veuillez remplir les trois champs mot de passe pour modifier votre mot de passe.<br/>';
+							}
+						}
+
+						if($this->request->exists('category'))
+						{
+							if(in_array($_SESSION['category'], ['Admin', 'Writer']))
+							{
+								$updateData['category'] = $this->request->getParam('category');
+								$confirmation .= 'Changement de grade effectué avec succès';
+							}
+							else
+							{
+								throw new \Exception('Unauthorised action');
+							}
+						}
+
+						$this->memberManager->update($memberId, $updateData);
 					}
+
 					$this->createView(array(
 						'member' => $member,
-						'message' => $message));
+						'message' => $message,
+						'confirmation' => $confirmation));
 				}
 				else
 				{
@@ -98,6 +159,24 @@ class MembersController extends Framework\Controller
 
 	public function delete()
 	{
+		if($this->request->exists('id'))
+		{
+			$memberId = (int) $this->request->getParam('id');
+			if($_SESSION['id'] === $memberId || in_array($_SESSION['category'], ['Admin', 'Writer', 'Mod']))
+			{
+				$this->memberManager->delete($memberId);
+				\session_destroy();
+				\header('Location: .');
+			}
+			else
+			{
+				throw new \Exception('Unauthorised action');
+			}
+		}
+		else
+		{
+			throw new \Exception('Cannot execute request');
+		}
 	}
 
 	public function index()

@@ -2,8 +2,7 @@
 
 namespace projets_developpeur_web\projet_4\Model\Managers;
 
-use projets_developpeur_web\projet_4\Model\Managers as Managers;
-use projets_developpeur_web\projet_4\Framework as Framework;
+use projets_developpeur_web\projet_4\Framework\DBFactory;
 
 abstract class Manager
 {
@@ -20,7 +19,7 @@ abstract class Manager
 
 		if(class_exists($child))
 		{
-			return new $child(Framework\DBFactory::setDb());
+			return new $child(DBFactory::setDb());
 		}
 		else
 		{

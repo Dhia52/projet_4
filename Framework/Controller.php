@@ -2,9 +2,6 @@
 
 namespace projets_developpeur_web\projet_4\Framework;
 
-use projets_developpeur_web\projet_4 as project;
-use projets_developpeur_web\projet_4\Model as Model;
-
 abstract class Controller
 {
 	protected $action;

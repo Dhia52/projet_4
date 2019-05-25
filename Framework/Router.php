@@ -2,8 +2,6 @@
 
 namespace projets_developpeur_web\projet_4\Framework;
 
-use projets_developpeur_web\projet_4\Controller as Controller;
-
 class Router
 {
 	public function routeRequest()

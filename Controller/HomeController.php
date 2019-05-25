@@ -2,19 +2,18 @@
 
 namespace projets_developpeur_web\projet_4\Controller;
 
-use projets_developpeur_web\projet_4\Model\Managers as Managers;
-use projets_developpeur_web\projet_4\Model as Model;
-use projets_developpeur_web\projet_4\Framework as Framework;
-use projets_developpeur_web\projet_4 as project;
+use projets_developpeur_web\projet_4\Model\Managers\Manager;
+use projets_developpeur_web\projet_4\Framework\Controller;
+use projets_developpeur_web\projet_4\Framework\Configuration;
 
 
-class HomeController extends Framework\Controller
+class HomeController extends Controller
 {
 	protected $episodeManager;
 
 	public function __construct()
 	{
-		$this->episodeManager = Managers\Manager::setManager('EpisodeManager', Framework\Configuration::get('DB_API'));
+		$this->episodeManager = Manager::setManager('EpisodeManager', Configuration::get('DB_API'));
 	}
 
 	public function index()

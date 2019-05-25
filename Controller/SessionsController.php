@@ -3,6 +3,7 @@
 namespace projets_developpeur_web\projet_4\Controller;
 
 use projets_developpeur_web\projet_4\Model\Managers\Manager;
+use projets_developpeur_web\projet_4\Model\Classes\Member;
 use projets_developpeur_web\projet_4\Framework\Controller;
 use projets_developpeur_web\projet_4\Framework\Configuration;
 

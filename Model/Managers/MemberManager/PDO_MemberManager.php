@@ -6,14 +6,28 @@ use projets_developpeur_web\projet_4\Model\Classes\Member;
 
 class PDO_MemberManager extends MemberManager
 {
-	public function getList()
+	public function getList($id = NULL)
 	{
 		$list = [];
 
-		$q = $this->db->query('SELECT * FROM members ORDER BY category, id');
-		while($data = $q->fetch(\PDO::FETCH_ASSOC))
+		if(isset($id) && $id > 0)
 		{
-			$list[] = new Member($data);
+			$q = $this->db->prepare('SELECT pseudo FROM members WHERE id <> :id');
+			$q->bindValue(':id', $id, \PDO::PARAM_INT);
+			$q->execute();
+
+			while($pseudo = $q->fetchColumn())
+			{
+				$list[] = $pseudo;
+			}
+		}
+		else
+		{
+			$q = $this->db->query('SELECT * FROM members ORDER BY category, id');
+			while($data = $q->fetch(\PDO::FETCH_ASSOC))
+			{
+				$list[] = new Member($data);
+			}
 		}
 
 		return $list;
@@ -59,21 +73,21 @@ class PDO_MemberManager extends MemberManager
 				$request = 'UPDATE members SET category = :category WHERE id = :id';
 				$column = ':category';
 				$newValue = $value;
-				$type = '\PDO::PARAM_STR';
+				$type = \PDO::PARAM_STR;
 				break;
 
 			case 'pseudo':
 				$request = 'UPDATE members SET pseudo = :pseudo WHERE id = :id';
 				$column = ':pseudo';
 				$newValue = $value;
-				$type = '\PDO::PARAM_STR';
+				$type = \PDO::PARAM_STR;
 				break;
 
 			case 'password':
 				$request = 'UPDATE members SET password = :password WHERE id = :id';
 				$column = ':password';
 				$newValue = $value;
-				$type = '\PDO::PARAM_STR';
+				$type = \PDO::PARAM_STR;
 				break;
 
 			case 'lastConnexion':
@@ -84,7 +98,7 @@ class PDO_MemberManager extends MemberManager
 				$request = 'UPDATE members SET nb_reports = :nb_reports WHERE id = :id';
 				$column = ':nb_reports';
 				$newValue = $value;
-				$type = '\PDO::PARAM_STR';
+				$type = \PDO::PARAM_INT;
 				break;
 			}
 
@@ -98,7 +112,13 @@ class PDO_MemberManager extends MemberManager
 		}
 	}
 	
-	public function delete($id){}
+	public function delete($id)
+	{
+		$q = $this->db->prepare('DELETE FROM members WHERE id = :id');
+		$q->bindValue(':id', $id, \PDO::PARAM_INT);
+		$q->execute();
+	}
+
 	public function exists($info)
 	{
 		if(is_int($info))

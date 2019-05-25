@@ -61,8 +61,18 @@ if(isset($_SESSION['id']) && $_SESSION['id'] === $member->id())
 <?php
 foreach($list as $comment)
 {
+	$trClass = '';
+	$reportText = 'Signaler';
+	$reportLink = 'href="?controller=comments&action=report&id=' . $comment->id() . '"';
+
+	if($comment->reported())
+	{
+		$trClass = 'table-warning';
+		$reportText = 'Commentaire signalé';
+		$reportLink = '';
+	}
 ?>
-					<tr class="row d-flex align-items-center">
+					<tr class="row <?= $trClass ?>">
 						<td class="col-md-3">
 							<a href="?controller=episodes&amp;action=read&amp;id=<?= $comment->episodeId() ?>">Episode <?= $comment->episodeId() ?></a><br>
 							<small><i>Le <?= $comment->commentDate() ?><br>
@@ -92,7 +102,7 @@ if(isset($_SESSION['id']))
 	else
 	{
 ?>
-							<a href="?controller=comments&amp;action=report&amp;id=<?= $comment->id() ?>" class="text-danger">Signaler</a>
+		<a <?= $reportLink ?> class="text-danger"><?= $reportText ?></a>
 <?php
 	}
 }

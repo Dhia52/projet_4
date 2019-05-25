@@ -2,21 +2,20 @@
 
 namespace projets_developpeur_web\projet_4\Controller;
 
-use projets_developpeur_web\projet_4\Model\Managers as Managers;
-use projets_developpeur_web\projet_4\Model as Model;
-use projets_developpeur_web\projet_4\Framework as Framework;
-use projets_developpeur_web\projet_4 as project;
+use projets_developpeur_web\projet_4\Model\Managers\Manager;
+use projets_developpeur_web\projet_4\Framework\Controller;
+use projets_developpeur_web\projet_4\Framework\Configuration;
 
 
-class EpisodesController extends Framework\Controller
+class EpisodesController extends Controller
 {
 	protected $episodeManager;
 	protected $commentManager;
 
 	public function __construct()
 	{
-		$this->episodeManager = Managers\Manager::setManager('EpisodeManager', Framework\Configuration::get('DB_API'));
-		$this->commentManager = Managers\Manager::setManager('CommentManager', Framework\Configuration::get('DB_API'));
+		$this->episodeManager = Manager::setManager('EpisodeManager', Configuration::get('DB_API'));
+		$this->commentManager = Manager::setManager('CommentManager', Configuration::get('DB_API'));
 	}
 
 	public function list()

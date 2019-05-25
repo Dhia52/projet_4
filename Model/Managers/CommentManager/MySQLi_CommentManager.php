@@ -3,7 +3,6 @@
 namespace projets_developpeur_web\projet_4\Model\Managers\CommentManager;
 
 use projets_developpeur_web\projet_4\Model\Classes\Comment;
-use projets_developpeur_web\projet_4\Model\Managers as Managers;
 
 class MySQLi_CommentManager extends CommentManager
 {

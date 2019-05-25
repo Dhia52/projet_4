@@ -7,7 +7,7 @@ use projets_developpeur_web\projet_4\Model\Managers\Manager;
 
 abstract class MemberManager extends Manager
 {
-	abstract public function getList();
+	abstract public function getList(int $id);
 	abstract public function getMember($info);
 	abstract public function create(Member $member);
 	abstract public function update($memberId, array $updates);

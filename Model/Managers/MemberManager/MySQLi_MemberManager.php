@@ -6,15 +6,31 @@ use projets_developpeur_web\projet_4\Model\Classes\Member;
 
 class MySQLi_MemberManager extends MemberManager
 {
-	public function getList()
+	public function getList($id = NULL)
 	{
 		$list = [];
 
-		$q = $this->db->query('SELECT * FROM members ORDER BY category, id');
-
-		while($data = $q->fetch_assoc())
+		if(isset($id))
 		{
-			$list[] = new Member($data);
+			$q = $this->db->prepare('SELECT pseudo FROM members WHERE id <> ?');
+			$q->bind_param('i', $id);
+			$q->execute();
+
+			$results = $q->get_result()->fetch_all();
+
+			foreach($results as $pseudo)
+			{
+				$list[] = $pseudo[0];
+			}
+		}
+		else
+		{
+			$q = $this->db->query('SELECT * FROM members ORDER BY category, id');
+	
+			while($data = $q->fetch_assoc())
+			{
+				$list[] = new Member($data);
+			}
 		}
 
 		return $list;
@@ -56,46 +72,56 @@ class MySQLi_MemberManager extends MemberManager
 	{
 		foreach($updates as $key => $value)
 		{
-			switch($key)
+			if($key = "lastConnexion")
 			{
-			case "category":
-				$request = 'UPDATE members SET category = ? WHERE id = ?';
-				$type = 'si';
-				$parameters = "$value, $id";
-				break;
-
-			case "pseudo":
-				$request = 'UPDATE members SET pseudo = ? WHERE id = ?';
-				$type = 'si';
-				$parameters = "$value, $id";
-				break;
-
-			case "password":
-				$request = 'UPDATE members SET password = ? WHERE id = ?';
-				$type = 'si';
-				$parameters = "$value, $id";
-				break;
-
-			case "lastConnexion":
-				$request = 'UPDATE members SET lastConnexion = NOW() WHERE id = ?';
-				$type = 'i';
-				$parameters = $id;
-				break;
-
-			case "nb_reports":
-				$request = 'UPDATE members SET nb_reports = ? WHERE id = ?';
-				$type = 'ii';
-				$parameters = "$value, $id";
-				break;
+				$q = $this->db->prepare('UPDATE members SET lastConnexion = NOW() WHERE id = ?');
+				$q->bind_param('i', $id);
+				$q->execute();
 			}
-			
-			$q = $this->db->prepare($request);
-			$q->bind_param($type, $parameters);
-			$q->execute();
+			else
+			{
+				switch($key)
+				{
+				case "category":
+					$request = 'UPDATE members SET category = ? WHERE id = ?';
+					$type = 'si';
+					$parameter1 = $value;
+					break;
+	
+				case "pseudo":
+					$request = 'UPDATE members SET pseudo = ? WHERE id = ?';
+					$type = 'si';
+					$parameter1 = $value;
+					break;
+
+				case "password":
+					$request = 'UPDATE members SET password = ? WHERE id = ?';
+					$type = 'si';
+					$parameter1 = $value;
+					break;
+
+				case "nb_reports":
+					$request = 'UPDATE members SET nb_reports = ? WHERE id = ?';
+					$type = 'ii';
+					$parameter1 = $value;
+					break;
+				}
+
+				$parameter2 = $id;
+				$q = $this->db->prepare($request);
+				$q->bind_param($type, $parameter1, $parameter2);
+				$q->execute();
+			}
 		}
 	}
 
-	public function delete($id){}
+	public function delete($id)
+	{
+		$q = $this->db->prepare('DELETE FROM members WHERE id = ?');
+		$q->bind_param('i', $id);
+		$q->execute();
+	}
+
 	public function exists($info)
 	{
 		if(is_int($info))

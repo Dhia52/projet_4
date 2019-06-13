@@ -87,6 +87,7 @@ class MembersController extends Controller
 								$updateData['pseudo'] = $newPseudo;
 								$confirmation .= "Changement de nom d'utilisateur effectué avec succès<br/>";
 								$_SESSION['pseudo'] = $newPseudo;
+								$member->setPseudo($newPseudo);
 							}
 						}
 
@@ -124,20 +125,71 @@ class MembersController extends Controller
 						{
 							if(in_array($_SESSION['category'], ['Admin', 'Writer']))
 							{
-								$updateData['category'] = $this->request->getParam('category');
+								$newCategory = $this->request->getParam('category');
+								$updateData['category'] = $newCategory;
 								$confirmation .= 'Changement de grade effectué avec succès';
+								$member->setCategory($newCategory);
 							}
 							else
 							{
 								throw new \Exception('Unauthorised action');
 							}
 						}
+						if($this->request->exists('email'))
+						{
+							$newEmail = $this->request->getParam('email');
+							if(\preg_match("#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#", $newEmail))
+							{
+								$updateData['email'] = $newEmail;
+								$confirmation .= "Changement d'adresse e-mail effectué avec succès";
+								$member->setEmail($newEmail);
+							}
+							else
+							{
+								$message .= 'Veuillez saisir une adresse e-mail valide.';
+							}
+						}
 
 						$this->memberManager->update($memberId, $updateData);
 					}
 
+					$selectDisabled = $pseudoDisabled = 'disabled="disabled"';
+					$selectOption1 = $selectOption2 = $selectOption3 = $selectOption4 = '';
+
+					switch($member->category())
+					{
+					case 'Admin':
+						$selectOption1 = 'selected="selected"';
+						break;
+					case 'Writer':
+						$selectOption2 = 'selected="selected"';
+						break;
+					case 'Mod':
+						$selectOption3 = 'selected="selected"';
+						break;
+					case 'Reader':
+						$selectOption4 = 'selected="selected"';
+						break;
+					}
+
+					if(\in_array($_SESSION['category'], ['Admin', 'Writer']))
+					{
+						$selectDisabled = '';
+					}
+
+					if($_SESSION['id'] === $memberId)
+					{
+						$pseudoDisabled = '';
+					}
+
 					$this->createView(array(
 						'member' => $member,
+						'pseudoDisabled' => $pseudoDisabled,
+						'selectDisabled' => $selectDisabled,
+						'selectOption1' => $selectOption1,
+						'selectOption2' => $selectOption2,
+						'selectOption3' => $selectOption3,
+						'selectOption4' => $selectOption4,
 						'message' => $message,
 						'confirmation' => $confirmation));
 				}

@@ -9,7 +9,7 @@ $this->setJavascript(['home.js']);?>
 		<p>Un roman de Jean Forteroche</p>
 	</header>
 	<div class="card text-center">
-		<img src="assets/img/alaska.jpeg" class="card-img-top rounded" style="height: 100%;">
+		<img src="assets/img/alaska.jpeg" alt="Image de couverture" class="card-img-top rounded" style="height: 100%;">
 		<div class="card-body">
 			<h2 class="card-title">Derniers épisodes publiés</h2>
 			<div class="row justify-content-around">

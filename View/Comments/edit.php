@@ -10,11 +10,7 @@ $this->setJavascript(['editComment.js']);
 	<h4><a href="?controller=episodes&amp;action=read&amp;id=<?= $comment->episodeId() ?>">Episode n°<?= $comment->episodeId() ?></a></h4>
 	</div>
 	<div class="form-row m-3">
-		<h4>Commentaire original</h4>
-	</div>
-	<div class="form-row m-3">
-		<p><?= $comment->comment() ?></p>
-		<textarea name="comment" rows="3" id="comment" class="form-control" placeholder="Ecrivez votre nouveau commentaire ici"></textarea>
+		<textarea name="comment" rows="3" id="comment" class="form-control"><?= $comment->comment() ?></textarea>
 	</div>
 	<div class="form-row m-3">
 		<div class="col-12"><button id="submitComment" type="submit" class="btn btn-primary" disabled="disabled">Enregistrer</button></div>

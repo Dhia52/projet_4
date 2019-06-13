@@ -39,7 +39,7 @@ class View
 		{
 			foreach($this->css as $script)
 			{
-				$html .= '<link rel="stylesheet" type= "text/css" href="' . $script . '">';
+				$html .= '<link rel="stylesheet" href="' . $script . '">';
 			}
 		}
 		return $html;
@@ -52,7 +52,7 @@ class View
 		{
 			foreach($this->javascript as $script)
 			{
-				$html .= '<script type= "text/javascript" src="' . $script . '"></script>';
+				$html .= '<script src="' . $script . '"></script>';
 			}
 		}
 		return $html;

@@ -97,6 +97,57 @@ class SessionsController extends Controller
 		header('Location: .');
 	}
 
+	public function resetPassword()
+	{
+		if(empty($_SESSION))
+		{
+			$message = '';
+
+			if(!empty($_POST))
+			{
+				if($this->request->exists('pseudo') && $this->request->exists('email'))
+				{
+					$pseudo = $this->request->getParam('pseudo');
+					$email = $this->request->getParam('email');
+					if($this->memberManager->exists($pseudo))
+					{
+						$member = $this->memberManager->getMember($pseudo);
+						if($email === $member->email())
+						{
+							$newPassword = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+							for($i = 0; $i <= 50; $i++)
+							{
+								$length = \strlen($newPassword);
+								$pos = \rand(0, $length - 1);
+								$newPassword = \str_replace($newPassword[$pos], '', $newPassword);
+							}
+							$newPassword = \str_shuffle($newPassword);
+							$this->memberManager->update($member->id(), array('password' => \password_hash($newPassword, PASSWORD_DEFAULT)));
+							/*$emailContent = "Bonjour $pseudo.\r\nVous avez effectué une demande de réinitialisation de mot de passe sur le blog de Billet simple pour l'Alaska. Une fois connecté, nous vous conseillons de redéfinir votre propre mot de passe depuis la page de modification de compte accessible depuis votre page de profil.\r\nVotre nouveau mot de passe est $newPassword.\r\n\r\nA bientôt sur notre blog !";
+							$emailContent = \wordwrap($emailContent, 70, "\r\n");
+							\mail($email, "Billet simple pour l'Alaska - Réinitialisation de mot de passe", $emailContent, "From: dhia.bani@gmail.com");
+							$message = "Un email a été envoyé à l'adresse suivante : $email.";*/
+							$message = "Mot de passe réinitialisé. Assurez-vous de le modifier dès que possible dans les paramètres de votre compte.<br/>Le mot de passe est : $newPassword";
+						}
+						else
+						{
+							$message = 'Données erronées';
+						}
+					}
+					else
+					{
+						$message = 'Données erronées';
+					}
+				}
+			}
+			$this->createView(array('message' => $message));
+		}
+		else
+		{
+			header('Location: .');
+		}
+	}
+
 	public function index()
 	{
 		$this->executeAction('signIn');

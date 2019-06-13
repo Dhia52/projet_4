@@ -72,7 +72,7 @@ class MySQLi_MemberManager extends MemberManager
 	{
 		foreach($updates as $key => $value)
 		{
-			if($key = "lastConnexion")
+			if($key === "lastConnexion")
 			{
 				$q = $this->db->prepare('UPDATE members SET lastConnexion = NOW() WHERE id = ?');
 				$q->bind_param('i', $id);
@@ -85,31 +85,31 @@ class MySQLi_MemberManager extends MemberManager
 				case "category":
 					$request = 'UPDATE members SET category = ? WHERE id = ?';
 					$type = 'si';
-					$parameter1 = $value;
 					break;
 	
 				case "pseudo":
 					$request = 'UPDATE members SET pseudo = ? WHERE id = ?';
 					$type = 'si';
-					$parameter1 = $value;
+					break;
+
+				case "email":
+					$request = 'UPDATE members SET email = ? WHERE id = ?';
+					$type = 'si';
 					break;
 
 				case "password":
 					$request = 'UPDATE members SET password = ? WHERE id = ?';
 					$type = 'si';
-					$parameter1 = $value;
 					break;
 
 				case "nb_reports":
 					$request = 'UPDATE members SET nb_reports = ? WHERE id = ?';
 					$type = 'ii';
-					$parameter1 = $value;
 					break;
 				}
 
-				$parameter2 = $id;
 				$q = $this->db->prepare($request);
-				$q->bind_param($type, $parameter1, $parameter2);
+				$q->bind_param($type, $value, $id);
 				$q->execute();
 			}
 		}

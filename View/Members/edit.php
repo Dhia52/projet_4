@@ -13,13 +13,19 @@ $this->setJavascript(["memberEdit.js"]);
 	<div class="form-row m-3">
 		<div class="col-sm-4"><label for="pseudo">Nom utilisateur : </label></div>
 		<div class="col-sm-8">
-		<input type="text" name="pseudo" id="pseudo" class="form-control" placeholder="Ne remplir ce champ qu'en cas de changement de nom d'utilisateur"/>
+		<input type="text" name="pseudo" id="pseudo" class="form-control" value="<?= $member->pseudo() ?>" <?= $pseudoDisabled ?>/>
 		</div>
 	</div>
 <?php
 if($_SESSION['id'] === (int) $_GET['id'])
 {
 ?>
+	<div class="form-row m-3">
+		<div class="col-sm-4"><label for="email">Adresse e-mail : </label></div>
+		<div class="col-sm-8">
+		<input type="email" name="email" id="email" class="form-control" value="<?= $member->email() ?>"/>
+		</div>
+	</div>
 	<div class="form-row m-3">
 		<div class="col-sm-4"><label for="oldPassword">Ancien mot de passe : </label></div>
 		<div class="col-sm-8">
@@ -42,17 +48,17 @@ if($_SESSION['id'] === (int) $_GET['id'])
 	<div class="form-row m-3">
 		<div class="col-sm-4"><label for="category">Grade : </label></div>
 		<div class="col-sm-8">
+
+			<select name="category" id="category" class="form-control" <?= $selectDisabled ?>/>
+				<option value="Admin" <?= $selectOption1 ?>>Administrateur</option>
+				<option value="Writer" <?= $selectOption2 ?>>Ecrivain</option>
+				<option value="Mod" <?= $selectOption3 ?>>Modérateur</option>
+				<option value="Reader" <?= $selectOption4 ?>>Lecteur</option>
+			</select>
 <?php
-if(\in_array($_SESSION['category'], ['Admin', 'Writer']))
+if(!\in_array($_SESSION['category'], ['Admin', 'Writer']))
 {
 ?>
-	<input type="text" name="category" id="category" class="form-control" placeholder="Ne remplir ce champ qu'en cas de changement de grade"/>
-<?php
-}
-else
-{
-?>
-	<?= $member->category() ?><br/>
 	<small class="form-text text-muted">Contactez l'administrateur du site pour modifier votre grade.</small>
 <?php
 }

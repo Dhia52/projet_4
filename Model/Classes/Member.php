@@ -4,12 +4,13 @@ namespace projets_developpeur_web\projet_4\Model\Classes;
 
 class Member
 {
-	private $id;
-	private $category;
-	private $pseudo;
-	private $password;
-	private $signDate;
-	private $lastConnexion;
+	protected $id;
+	protected $category;
+	protected $pseudo;
+	protected $email;
+	protected $password;
+	protected $signDate;
+	protected $lastConnexion;
 
 	public function __construct(array $memberData)
 	{
@@ -42,6 +43,11 @@ class Member
 	public function pseudo()
 	{
 		return $this->pseudo;
+	}
+	
+	public function email()
+	{
+		return $this->email;
 	}
 	
 	public function password()
@@ -96,6 +102,18 @@ class Member
 		}
 	}
 	
+	public function setEmail($email)
+	{
+		if (\strlen($email) <= 50 && \preg_match("#^[a-zA-Z0-9._-]+@[a-zA-Z0-9]{2,}\.[a-z]{2,4}$#", $email))
+		{
+			$this->email = $email;
+		}
+		else
+		{
+			throw new \Exception('Invalid email address');
+		}
+	}
+
 	public function setPassword($password)
 	{
 		if (strlen($password) >= 8)

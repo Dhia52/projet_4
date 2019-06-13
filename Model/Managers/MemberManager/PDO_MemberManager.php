@@ -83,6 +83,13 @@ class PDO_MemberManager extends MemberManager
 				$type = \PDO::PARAM_STR;
 				break;
 
+			case 'email':
+				$request = 'UPDATE members SET email = :email WHERE id = :id';
+				$column = ':email';
+				$newValue = $value;
+				$type = \PDO::PARAM_STR;
+				break;
+
 			case 'password':
 				$request = 'UPDATE members SET password = :password WHERE id = :id';
 				$column = ':password';
